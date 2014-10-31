@@ -1,4 +1,4 @@
-var x : int;
+var x, y : int;
 var pi : float;
 var texto : string;
 {

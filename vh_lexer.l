@@ -1,8 +1,9 @@
 %{
 
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
-
+#include "vh_tipos.h"
 #include "vh_parser.tab.h"
 extern YYSTYPE yylval;
 extern int MODO_DEBUG;
@@ -18,7 +19,6 @@ L_IF                 "if"
 L_ELSE               "else"
 L_ENDIF              "endif"
 
-L_TYPE               "type"
 L_CHAR               "char"
 L_BOOLEAN            "boolean"
 L_INTEGER            "int"
@@ -73,12 +73,11 @@ L_LINEFEED          [\n]
 {L_ELSE}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ELSE;}
 {L_ENDIF}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ENDIF;}
 
-{L_TYPE}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return TYPE;}
-{L_CHAR}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return CHAR;}
-{L_BOOLEAN}            {if(MODO_DEBUG) printf("passou no %s\n", yytext); return BOOLEAN;}
-{L_INTEGER}            {if(MODO_DEBUG) printf("passou no %s\n", yytext); return INTEGER;}
-{L_FLOAT}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return FLOAT;}
-{L_STRING}             {if(MODO_DEBUG) printf("passou no %s\n", yytext); return STRING;}
+{L_CHAR}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_CHAR; return CHAR;}
+{L_BOOLEAN}            {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_BOOLEAN; return BOOLEAN;}
+{L_INTEGER}            {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_INT; return INTEGER;}
+{L_FLOAT}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_FLOAT; return FLOAT;}
+{L_STRING}             {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_STRING; return STRING;}
 {L_VAR}                {if(MODO_DEBUG) printf("passou no %s\n", yytext); return VAR;}
 
 {L_TRUE}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return TRUE;}
@@ -113,7 +112,7 @@ L_LINEFEED          [\n]
 {L_NUMERALFLOAT}       {if(MODO_DEBUG) printf("passou no %s\n", yytext); sscanf(yytext, "%f", &yylval.numeralfloat); return NUMERALFLOAT;}
 {L_NUMERALINT}         {if(MODO_DEBUG) printf("passou no %s\n", yytext); sscanf(yytext, "%d", &yylval.numeralint); return NUMERALINT;}
 {L_STRINGVAL}          {if(MODO_DEBUG) printf("passou em STRINGVAL: %s\n", yytext); sscanf(yytext, "%s", &yylval.string); return STRINGVAL;}
-{L_ID}                 {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ID;}
+{L_ID}                 {if(MODO_DEBUG) printf("passou no ID: %s\n", yytext);  strcpy(yylval.id, yytext); return ID;}
 
 %%
 
