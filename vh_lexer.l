@@ -54,11 +54,11 @@ L_TIMES              "*"
 L_DIVIDE             "/"
 L_NOT                "!"
 
-L_CHARACTER          "\'"".""\'"
+L_CHARACTER         ['][^'][']
 L_NUMERALFLOAT      [0-9]*[\.][0-9]+
 L_NUMERALINT        [0-9]+
-L_STRINGVAL         ["][a-zA-Z_]*["]
-L_ID                [a-zA-Z_]+[0-9]*[a-zA-Z_]*
+L_STRINGVAL         ["][[:alpha:]]*["]
+L_ID                [a-zA-Z]+[a-zA-Z]*[0-9]*
 L_WS                [ \r\t]*
 L_LINEFEED          [\n]
  
@@ -108,10 +108,10 @@ L_LINEFEED          [\n]
 {L_DIVIDE}             {if(MODO_DEBUG) printf("passou no %s\n", yytext); return DIVIDE;}
 {L_NOT}                {if(MODO_DEBUG) printf("passou no %s\n", yytext); return NOT;}
 
-{L_CHARACTER}          {if(MODO_DEBUG) printf("passou no %s\n", yytext); return CHARACTER;}
+{L_CHARACTER}          {if(MODO_DEBUG) printf("passou no char %c\n", yytext[1]); yylval.character = yytext[1]; return CHARACTER;}
 {L_NUMERALFLOAT}       {if(MODO_DEBUG) printf("passou no %s\n", yytext); sscanf(yytext, "%f", &yylval.numeralfloat); return NUMERALFLOAT;}
 {L_NUMERALINT}         {if(MODO_DEBUG) printf("passou no %s\n", yytext); sscanf(yytext, "%d", &yylval.numeralint); return NUMERALINT;}
-{L_STRINGVAL}          {if(MODO_DEBUG) printf("passou em STRINGVAL: %s\n", yytext); sscanf(yytext, "%s", &yylval.string); return STRINGVAL;}
+{L_STRINGVAL}          {if(MODO_DEBUG) printf("passou em STRINGVAL: %s\n", yytext); char* str_temp = yytext; str_temp++; str_temp[strlen(str_temp)-1] = 0; yylval.string = strdup(str_temp); return STRINGVAL;}
 {L_ID}                 {if(MODO_DEBUG) printf("passou no ID: %s\n", yytext);  strcpy(yylval.id, yytext); return ID;}
 
 %%

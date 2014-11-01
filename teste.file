@@ -1,8 +1,9 @@
-var x, y : int;
+var x, y : char;
 var pi : float;
 var texto : string;
 {
     if ( true ) x = 2; endif
     pi = 3.14;
     texto = "brasil";
+    x = 'm';
 }

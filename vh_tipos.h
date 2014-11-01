@@ -3,6 +3,7 @@
 #include <string.h>
 
 #define VH_TIPOS
+#define MAX_CONSTS 30
 #define MAX_VARS 30
 #define MAX_VAR_LENGTH 20
 
@@ -40,6 +41,20 @@ typedef struct var_object {
 } var_object;
 
 
+/*
+ * A ser usado como definicao de uma constante.
+ */
+typedef struct const_object {
+	v_type my_type;
+	int index;
+	int    value_i;
+	float  value_f;
+	char   value_c;
+	char*  value_s;
+	int    value_b;
+} const_object;
+
+
 typedef struct t_nonterm{
 	union {
 		struct 	{
@@ -47,6 +62,8 @@ typedef struct t_nonterm{
 		} P;
 
 		struct 	{
+			char* my_label;
+			int index;
 		} IDU;
 		
 		struct 	{
@@ -59,9 +76,13 @@ typedef struct t_nonterm{
 
 				
 		struct 	{
+			struct const_object my_const;
 		} NUM;
 		
 		struct 	{
+			int is_var;
+			var_object var;
+			const_object cnt;
 		} R;
 		
 		struct 	{
@@ -152,10 +173,24 @@ object new_object(char* label, pobject* type);
 // char** variables;
 void init_globais();
 
-int var_scan_or_append(char* label);
+int var_scan(char* label);
+int var_scan_or_append(var_object var);
+int var_scan_or_append_old(char* label);
+
+int const_append(const_object cnt);
 
 /*
  * Seta o valor default na instanciacao de uma variavel.
  * Ex.: int inicializa com 0, boolean com TRUE, etc..
  */
 void set_default_values(var_object* temp_id);
+
+/*
+ * Faz a checagem de tipos, e indica o tipo de retorno da combinacao, ou 
+ * devolve -1 caso a operacao seja ilegal.
+ */
+int check_types(v_type t1, int operador, v_type t2);
+
+void copy_var_object(var_object* dest, var_object* src);
+
+void debug_var(var_object v);

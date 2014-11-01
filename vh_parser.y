@@ -80,8 +80,8 @@ extern void init_globais();
 %token <id> ID
 
 %token <string> STRINGVAL
-%token <boolean_> TRUE
-%token <boolean_> FALSE
+%token <boolean> TRUE
+%token <boolean> FALSE
 %token <character> CHARACTER
 %token <numeralfloat> NUMERALFLOAT
 %token <numeralint> NUMERALINT
@@ -106,9 +106,17 @@ DV:     VAR LI COLON T SEMI_COLON {
                                     
                                     // Vamos agora iterar sobre todas as variaveis declaradas em LI
                                     var_object* temp_id = $2._.LI.ids_list;
+                                    temp_id->next = $2._.LI.ids_list->next;
                                     while(temp_id != NULL) {
+                                      // Setando o tipo e valores default
                                       temp_id->my_type = defined_type;
                                       set_default_values(temp_id);
+
+                                      // Inserindo as variaveis em nosso array de variaveis e retornando o indice de cada uma delas
+                                      temp_id->index = var_scan_or_append(*temp_id);
+                                      
+                                      debug_var(*temp_id);
+
                                       temp_id = temp_id->next;
                                     }
                                     
@@ -178,34 +186,73 @@ E:      E AND R
 ;
 
 R:      PLUS_PLUS R
-      | R PLUS_PLUS
       | MINUS_MINUS R
-      | R MINUS_MINUS
       | MINUS R
       | NOT R
-      | TRUE  
-      | FALSE
-      | CHARACTER
-      | STRINGVAL
-      | NUM
-      | IDU
+      | TRUE            {
+                          $$._.R.is_var = 0;
+                          $$._.R.cnt.my_type = V_BOOLEAN;
+                          $$._.R.cnt.value_b = BOOLEANTRUE;
+                          $$._.R.cnt.index = const_append($$._.R.cnt);
+                        }
+      | FALSE           {
+                          $$._.R.is_var = 0;
+                          $$._.R.cnt.my_type = V_BOOLEAN;
+                          $$._.R.cnt.value_b = BOOLEANFALSE;
+                          $$._.R.cnt.index = const_append($$._.R.cnt);
+                        }
+      | CHARACTER       {
+                          $$._.R.is_var = 0;
+                          $$._.R.cnt.my_type = V_CHAR;
+                          $$._.R.cnt.value_c = $1;
+                          $$._.R.cnt.index = const_append($$._.R.cnt);
+                        }
+      | STRINGVAL       {
+                          printf("string que veio: %s\n", $1);
+                          $$._.R.is_var = 0;
+                          $$._.R.cnt.my_type = V_STRING;
+                          $$._.R.cnt.value_s = (char*)malloc(strlen($1) + 1);
+                          strcpy($$._.R.cnt.value_s, $1);
+                          $$._.R.cnt.index = const_append($$._.R.cnt);
+                        }
+      | NUM             {
+                          $$._.R.is_var = 0;
+                          $$._.R.cnt = $$._.NUM.my_const;
+                        }
+      | IDU             {
+                          $$._.R.is_var = 1;
+                          //TODO: deep copy (maybe using the copy_var_object...)
+                          //$$._.R.var = $1._.IDU.my_ID;
+                        }
 ;
 
 
-NUM:    NUMERALFLOAT
-      | NUMERALINT
+NUM:    NUMERALFLOAT {
+                       $$._.NUM.my_const.my_type = V_FLOAT;
+                       $$._.NUM.my_const.value_f = $1;
+                     }
+      | NUMERALINT   {
+                       $$._.NUM.my_const.my_type = V_INT;
+                       $$._.NUM.my_const.value_i = $1;
+                     }
 ;
 
 IDD:    ID    {
                 $$._.IDD.my_ID.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
                 $$._.IDD.my_ID.next = NULL;
                 strcpy($$._.IDD.my_ID.my_label, $1);
-                if(MODO_DEBUG)
-                  printf("labelwwww: %d\n", strlen($1));
+                //if(MODO_DEBUG)
+                //  printf("labelwwww: %d\n", strlen($1));
               }
 ;
 
-IDU:    ID
+IDU:    ID {
+             $$._.IDU.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
+             strcpy($$._.IDU.my_label, $1);
+             $$._.IDU.index = var_scan($$._.IDU.my_label);
+             if($$._.IDU.index < 0)
+               yyerror("Identificador nao encontrado!");
+           }
 ;
 
 
