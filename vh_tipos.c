@@ -77,6 +77,7 @@ int const_append(const_object cnt) {
 	 ALL_CONSTANTS_SIZE++;
 
 	 ALL_CONSTANTS[ALL_CONSTANTS_SIZE].index = ALL_CONSTANTS_SIZE;
+	 printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %d\n", ALL_CONSTANTS[ALL_CONSTANTS_SIZE].index);
 	 ALL_CONSTANTS[ALL_CONSTANTS_SIZE].my_type = cnt.my_type;
 	 ALL_CONSTANTS[ALL_CONSTANTS_SIZE].value_b = cnt.value_b;
 	 ALL_CONSTANTS[ALL_CONSTANTS_SIZE].value_c = cnt.value_c;
@@ -195,37 +196,53 @@ void set_default_values(var_object* temp_id) {
  */
 int check_types(v_type t1, int operador, v_type t2) {
 	                // V_INT, FLOAT, CHAR, STRING, BOOLEAN
-	// switch(operador) {
-	// 	case AND:
-	// 	case OR:
-	// 	;
-	// 	case LESS_THAN:
-	// 	case LESS_OR_EQUAL:
-	// 	case GREATER_THAN:
-	// 	case GREATER_OR_EQUAL:
-	// 	case EQUAL_EQUAL:
-	// 	case NOT_EQUAL:
-	// 	case PLUS:
-	// 	case MINUS:
-	// 	case TIMES:
-	// 	case DIVIDE:
-	// 	case PLUS_PLUS:
-	// 	case MINUS_MINUS:
-	// 	case NOT:
+	 switch(operador) {
+		case NOT:
+	 	case AND:
+	 	case OR:
+	 		if(t1==V_BOOLEAN && t2==V_BOOLEAN)
+	 			return V_BOOLEAN;
+	 		else
+	 			return -1;
+	 	break;
+		
+		case PLUS:
+		case MINUS:
+		case TIMES:
+		case DIVIDE:
+		case PLUS_PLUS:
+		case MINUS_MINUS:
+		case LESS_THAN:
+		case LESS_OR_EQUAL:
+		case GREATER_THAN:
+		case GREATER_OR_EQUAL:
+			if( (t1==V_INT && t2==V_INT)     ||
+			    (t1==V_FLOAT && t2==V_FLOAT) ||
+			    (t1==V_INT && t2==V_FLOAT)   ||
+			    (t1==V_FLOAT && t2==V_INT)   )
+				return V_BOOLEAN;
+			else
+	 			return -1;
+		break;
+		
+		case EQUAL_EQUAL:
+		case NOT_EQUAL:
+			if( (t1==V_INT && t2==V_INT)          ||
+			    (t1==V_FLOAT && t2==V_FLOAT)      ||
+			    (t1==V_INT && t2==V_FLOAT)        ||
+			    (t1==V_FLOAT && t2==V_INT)        ||
+			    (t1==V_CHAR && t2==V_CHAR)        ||
+			    (t1==V_STRING && t2==V_STRING)    ||
+			    (t1==V_BOOLEAN && t2==V_BOOLEAN)  )
+				return V_BOOLEAN;
+			else
+	 			return -1;
+		break;
 
-	// }
-	// int v_int_compat[] = {V_INT, V_FLOAT, -1, -1, };
-
-
-	// switch(t1) {
-	// 	case V_INT: temp_id->value_i = 0; break;
-	// 	case V_FLOAT: temp_id->value_f = 0.0; break;
-	// 	case V_CHAR: temp_id->value_c = 0x00; break;
-	// 	case V_BOOLEAN: temp_id->value_b = BOOLEANFALSE; break;
-	// 	case V_STRING: temp_id->value_s = NULL; break;
-	// 	default: printf("Erro: tipo bizarro na checagem!!"); break;
-	// }
-	return -1;
+		default:
+			return -1;
+		break;
+	}
 }
 
 void debug_var(var_object v) {
@@ -280,7 +297,26 @@ void copy_var_object(var_object* dest, var_object src) {
 	(*dest).value_i = src.value_i;
 	(*dest).value_f = src.value_f;
 	(*dest).value_c = src.value_c;
-	(*dest).value_s = src.value_s;
 	(*dest).value_b = src.value_b;
+	
+	if(src.value_s != NULL) {
+		(*dest).value_s = (char*)malloc(strlen(src.value_s) + 1);
+		strcpy((*dest).value_s, src.value_s);	
+	}
+	return;
+}
+
+void copy_cnt_object(const_object* dest, const_object src) {
+	(*dest).my_type = src.my_type;
+	(*dest).index   = src.index;
+	(*dest).value_i = src.value_i;
+	(*dest).value_f = src.value_f;
+	(*dest).value_c = src.value_c;
+	(*dest).value_b = src.value_b;
+	
+	if(src.value_s != NULL) {
+		(*dest).value_s = (char*)malloc(strlen(src.value_s) + 1);
+		strcpy((*dest).value_s, src.value_s);
+	}
 	return;
 }

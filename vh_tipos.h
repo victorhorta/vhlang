@@ -193,9 +193,11 @@ void set_default_values(var_object* temp_id);
  * devolve -1 caso a operacao seja ilegal.
  */
 int check_types(v_type t1, int operador, v_type t2);
+int check_R_type(t_nonterm R, int operador);
 
 var_object get_var_object(int index);
 void copy_var_object(var_object* dest, var_object src);
+void copy_cnt_object(const_object* dest, const_object src);
 
 void debug_var(var_object v);
 void debug_cnt(const_object v);

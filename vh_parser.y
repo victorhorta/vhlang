@@ -181,10 +181,71 @@ E:      E AND R
       | R
 ;
 
-R:      PLUS_PLUS R
-      | MINUS_MINUS R
-      | MINUS R
-      | NOT R
+R:      PLUS_PLUS R     {
+                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
+                          int r_type = check_types(t1, PLUS_PLUS, t1);
+                          if(r_type == -1)
+                              yyerror("Type error!");
+                          else {
+                            if($2._.R.is_var == 1) {
+                                copy_var_object(&$$._.R.var, $2._.R.var);
+                                $$._.R.var.my_type = check_types(t1, NOT, t1);
+                              } else {
+                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
+                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
+                              }
+                          }
+                          //TODO: fprintf comando
+                        }   
+      | MINUS_MINUS R   {
+                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
+                          int r_type = check_types(t1, MINUS_MINUS, t1);
+                          if(r_type == -1)
+                              yyerror("Type error!");
+                          else {
+                            if($2._.R.is_var == 1) {
+                                copy_var_object(&$$._.R.var, $2._.R.var);
+                                $$._.R.var.my_type = check_types(t1, NOT, t1);
+                              } else {
+                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
+                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
+                              }
+                          }
+                          //TODO: fprintf comando
+                        }   
+      | MINUS R         {
+                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
+                          int r_type = check_types(t1, MINUS, t1);
+                          if(r_type == -1)
+                              yyerror("Type error!");
+                          else {
+                            if($2._.R.is_var == 1) {
+                                copy_var_object(&$$._.R.var, $2._.R.var);
+                                $$._.R.var.my_type = check_types(t1, NOT, t1);
+                              } else {
+                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
+                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
+                              }
+                          }
+                          //TODO: fprintf comando
+                        }   
+      | NOT R           {
+                          // checking type
+                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
+                          int r_type = check_types(t1, NOT, t1);
+                          if(r_type == -1)
+                              yyerror("Type error!");
+                          else {
+                            if($2._.R.is_var == 1) {
+                                copy_var_object(&$$._.R.var, $2._.R.var);
+                                $$._.R.var.my_type = check_types(t1, NOT, t1);
+                              } else {
+                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
+                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
+                              }
+                          }
+                          //TODO: fprintf comando
+                        }   
       | TRUE            {
                           $$._.R.is_var = 0;
                           $$._.R.cnt.my_type = V_BOOLEAN;
@@ -213,7 +274,8 @@ R:      PLUS_PLUS R
                         }
       | NUM             {
                           $$._.R.is_var = 0;
-                          $$._.R.cnt = $$._.NUM.my_const;
+                          copy_cnt_object(&$$._.R.cnt, $$._.NUM.my_const);
+                          $$._.R.cnt.index = const_append($$._.R.cnt);
                           debug_cnt($$._.R.cnt);
                         }
       | IDU             {
