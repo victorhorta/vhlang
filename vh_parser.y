@@ -56,10 +56,6 @@ extern void init_globais();
 %left MINUS_MINUS
 
 
-
-
-
-
 %token <vtype> INTEGER
 %token <vtype> STRING
 %token <vtype> FLOAT
@@ -218,11 +214,11 @@ R:      PLUS_PLUS R
       | NUM             {
                           $$._.R.is_var = 0;
                           $$._.R.cnt = $$._.NUM.my_const;
+                          debug_cnt($$._.R.cnt);
                         }
       | IDU             {
                           $$._.R.is_var = 1;
-                          //TODO: deep copy (maybe using the copy_var_object...)
-                          //$$._.R.var = $1._.IDU.my_ID;
+                          copy_var_object(&$$._.R.var, get_var_object($1._.IDU.index));
                         }
 ;
 

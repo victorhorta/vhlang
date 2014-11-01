@@ -86,6 +86,9 @@ typedef struct t_nonterm{
 		} R;
 		
 		struct 	{
+			int is_var;	
+			var_object var;
+			const_object cnt;
 		} E;
 		
 		struct 	{
@@ -191,6 +194,8 @@ void set_default_values(var_object* temp_id);
  */
 int check_types(v_type t1, int operador, v_type t2);
 
-void copy_var_object(var_object* dest, var_object* src);
+var_object get_var_object(int index);
+void copy_var_object(var_object* dest, var_object src);
 
 void debug_var(var_object v);
+void debug_cnt(const_object v);

@@ -4,7 +4,7 @@
 #include "vh_tipos.h"
 #include "vh_parser.tab.h"
 
-
+extern int yyerror(const char *msg);
 
 // Definindo os escalares
 object int_ = { -1, NULL, SCALAR_TYPE_};
@@ -229,7 +229,7 @@ int check_types(v_type t1, int operador, v_type t2) {
 }
 
 void debug_var(var_object v) {
-	printf("-------------\n");
+	printf("--DEBUGVAR-----------\n");
 	
 	printf("> my_type:  %d\n", v.my_type);
 	printf("> my_label: %s\n", v.my_label);
@@ -245,8 +245,42 @@ void debug_var(var_object v) {
 	return;
 }
 
-void copy_var(var_object* dest, var_object* src) {
-	dest->value_i = src->value_i;
+void debug_cnt(const_object c) {
+	printf("--DEBUGCNT-----------\n");
+	
+	printf("> my_type:  %d\n", c.my_type);
+	printf("> index:    %d\n", c.index);
+    printf("> value_i:  %d\n", c.value_i);
+	printf("> value_f:  %f\n", c.value_f);
+	printf("> value_c:  %c\n", c.value_c);
+	printf("> value_s:  %s\n", c.value_s);
+	printf("> value_b:  %d\n", c.value_b);
+	
+	printf("-------------\n");
+	
+	return;
+}
 
+var_object get_var_object(int index) {
+	var_object temp;
+	
+	if(index > ALL_VARIABLES_SIZE || index < 0) {
+		yyerror("Erro: index errado / nao encontrado em get_var");
+		return temp;
+	}
+
+	return ALL_VARIABLES[index];
+}
+
+void copy_var_object(var_object* dest, var_object src) {
+	(*dest).my_label = (char*)malloc(strlen(src.my_label) + 1);
+	strcpy((*dest).my_label, src.my_label);
+	(*dest).my_type = src.my_type;
+	(*dest).index   = src.index;
+	(*dest).value_i = src.value_i;
+	(*dest).value_f = src.value_f;
+	(*dest).value_c = src.value_c;
+	(*dest).value_s = src.value_s;
+	(*dest).value_b = src.value_b;
 	return;
 }
