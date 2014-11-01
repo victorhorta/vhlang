@@ -82,10 +82,16 @@ int yyerror(const char *msg) {
     return 0;
 }
 
+int yyerror_type(v_type t1, v_type t2) {
+    printf("BARRO::: linha: %d -- mensagem: ", line_num);
+    printf("Type error ao atribuir tipo %s a variavel tipo %s!\n", get_type_name(t2), get_type_name(t1));
+    return 0;
+}
+
 extern void init_globais();
 
 /* Line 371 of yacc.c  */
-#line 89 "vh_parser.tab.c"
+#line 95 "vh_parser.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -168,7 +174,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 24 "vh_parser.y"
+#line 30 "vh_parser.y"
 
     int numeralint;
     float numeralfloat;
@@ -181,7 +187,7 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 185 "vh_parser.tab.c"
+#line 191 "vh_parser.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -209,7 +215,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 213 "vh_parser.tab.c"
+#line 219 "vh_parser.tab.c"
 
 #ifdef short
 # undef short
@@ -527,11 +533,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    88,    88,    91,    92,    95,    96,    99,   125,   129,
-     130,   131,   132,   133,   138,   139,   143,   153,   162,   163,
-     164,   165,   166,   169,   170,   171,   172,   173,   174,   175,
-     176,   177,   178,   179,   180,   181,   184,   200,   216,   232,
-     249,   255,   261,   267,   275,   281,   288,   292,   298,   307
+       0,    94,    94,    97,    98,   101,   102,   105,   131,   135,
+     136,   137,   138,   139,   144,   145,   149,   159,   168,   169,
+     170,   179,   180,   183,   184,   185,   186,   187,   188,   189,
+     190,   191,   199,   200,   201,   202,   210,   226,   242,   258,
+     275,   281,   287,   293,   301,   307,   314,   318,   324,   333
 };
 #endif
 
@@ -1486,7 +1492,7 @@ yyreduce:
     {
         case 7:
 /* Line 1787 of yacc.c  */
-#line 99 "vh_parser.y"
+#line 105 "vh_parser.y"
     {
                                     // Primeiro, vamos recuperar o tipo que foi definido
                                     v_type defined_type = (yyvsp[(4) - (5)].nonterm)._.T.type;
@@ -1515,37 +1521,37 @@ yyreduce:
 
   case 9:
 /* Line 1787 of yacc.c  */
-#line 129 "vh_parser.y"
+#line 135 "vh_parser.y"
     { (yyval.nonterm)._.T.type = (yyvsp[(1) - (1)].vtype); printf("meu tipo: %d\n", (yyval.nonterm)._.T.type);}
     break;
 
   case 10:
 /* Line 1787 of yacc.c  */
-#line 130 "vh_parser.y"
+#line 136 "vh_parser.y"
     { (yyval.nonterm)._.T.type = (yyvsp[(1) - (1)].vtype); printf("meu tipo: %d\n", (yyval.nonterm)._.T.type);}
     break;
 
   case 11:
 /* Line 1787 of yacc.c  */
-#line 131 "vh_parser.y"
+#line 137 "vh_parser.y"
     { (yyval.nonterm)._.T.type = (yyvsp[(1) - (1)].vtype); printf("meu tipo: %d\n", (yyval.nonterm)._.T.type);}
     break;
 
   case 12:
 /* Line 1787 of yacc.c  */
-#line 132 "vh_parser.y"
+#line 138 "vh_parser.y"
     { (yyval.nonterm)._.T.type = (yyvsp[(1) - (1)].vtype); printf("meu tipo: %d\n", (yyval.nonterm)._.T.type);}
     break;
 
   case 13:
 /* Line 1787 of yacc.c  */
-#line 133 "vh_parser.y"
+#line 139 "vh_parser.y"
     { (yyval.nonterm)._.T.type = (yyvsp[(1) - (1)].vtype); printf("meu tipo: %d\n", (yyval.nonterm)._.T.type);}
     break;
 
   case 16:
 /* Line 1787 of yacc.c  */
-#line 143 "vh_parser.y"
+#line 149 "vh_parser.y"
     {
                        (yyvsp[(3) - (3)].nonterm)._.IDD.my_ID.next = (var_object*)malloc(sizeof(var_object));
                        (yyvsp[(3) - (3)].nonterm)._.IDD.my_ID.next = (yyvsp[(1) - (3)].nonterm)._.LI.ids_list;
@@ -1559,7 +1565,7 @@ yyreduce:
 
   case 17:
 /* Line 1787 of yacc.c  */
-#line 153 "vh_parser.y"
+#line 159 "vh_parser.y"
     {
                        (yyval.nonterm)._.LI.ids_list = (var_object*)malloc(sizeof(var_object));
                        (yyval.nonterm)._.LI.ids_list = &(yyvsp[(1) - (1)].nonterm)._.IDD.my_ID;
@@ -1569,9 +1575,47 @@ yyreduce:
                      }
     break;
 
+  case 20:
+/* Line 1787 of yacc.c  */
+#line 170 "vh_parser.y"
+    {
+                                  int result_type = check_types(get_var_object((yyvsp[(1) - (4)].nonterm)._.IDU.index).my_type, EQUALS, (yyvsp[(3) - (4)].nonterm)._.E.my_type);
+                                  if(result_type == -1) {
+                                    yyerror_type((yyvsp[(3) - (4)].nonterm)._.E.my_type, get_var_object((yyvsp[(1) - (4)].nonterm)._.IDU.index).my_type);
+                                  } else {
+                                    printf("OK -- %s = %s\n",  get_type_name((yyvsp[(3) - (4)].nonterm)._.E.my_type), get_type_name(get_var_object((yyvsp[(1) - (4)].nonterm)._.IDU.index).my_type)); 
+                                  }
+
+                                }
+    break;
+
+  case 31:
+/* Line 1787 of yacc.c  */
+#line 191 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  (yyval.nonterm)._.E.index   = ((yyvsp[(1) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (3)].nonterm)._.R.var.index : (yyvsp[(1) - (3)].nonterm)._.R.cnt.index);
+                                  (yyval.nonterm)._.E.my_type = ((yyvsp[(1) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (3)].nonterm)._.R.var.my_type : (yyvsp[(1) - (3)].nonterm)._.R.cnt.my_type);
+                                  //TODO: jogar E   no topo da pilha
+                                  //TODO: jogar R   no topo da pilha
+                                  //TODO: jogar add no topo da pilha
+                                }
+    break;
+
+  case 35:
+/* Line 1787 of yacc.c  */
+#line 202 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = (yyvsp[(1) - (1)].nonterm)._.R.is_var;
+                                  (yyval.nonterm)._.E.index   = ((yyvsp[(1) - (1)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (1)].nonterm)._.R.var.index : (yyvsp[(1) - (1)].nonterm)._.R.cnt.index);
+                                  (yyval.nonterm)._.E.my_type = ((yyvsp[(1) - (1)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (1)].nonterm)._.R.var.my_type : (yyvsp[(1) - (1)].nonterm)._.R.cnt.my_type);
+                                  //TODO: jogar E no topo da pilha
+                                }
+    break;
+
   case 36:
 /* Line 1787 of yacc.c  */
-#line 184 "vh_parser.y"
+#line 210 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, PLUS_PLUS, t1);
@@ -1592,7 +1636,7 @@ yyreduce:
 
   case 37:
 /* Line 1787 of yacc.c  */
-#line 200 "vh_parser.y"
+#line 226 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, MINUS_MINUS, t1);
@@ -1613,7 +1657,7 @@ yyreduce:
 
   case 38:
 /* Line 1787 of yacc.c  */
-#line 216 "vh_parser.y"
+#line 242 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, MINUS, t1);
@@ -1634,7 +1678,7 @@ yyreduce:
 
   case 39:
 /* Line 1787 of yacc.c  */
-#line 232 "vh_parser.y"
+#line 258 "vh_parser.y"
     {
                           // checking type
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
@@ -1656,7 +1700,7 @@ yyreduce:
 
   case 40:
 /* Line 1787 of yacc.c  */
-#line 249 "vh_parser.y"
+#line 275 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_BOOLEAN;
@@ -1667,7 +1711,7 @@ yyreduce:
 
   case 41:
 /* Line 1787 of yacc.c  */
-#line 255 "vh_parser.y"
+#line 281 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_BOOLEAN;
@@ -1678,7 +1722,7 @@ yyreduce:
 
   case 42:
 /* Line 1787 of yacc.c  */
-#line 261 "vh_parser.y"
+#line 287 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_CHAR;
@@ -1689,7 +1733,7 @@ yyreduce:
 
   case 43:
 /* Line 1787 of yacc.c  */
-#line 267 "vh_parser.y"
+#line 293 "vh_parser.y"
     {
                           printf("string que veio: %s\n", (yyvsp[(1) - (1)].string));
                           (yyval.nonterm)._.R.is_var = 0;
@@ -1702,7 +1746,7 @@ yyreduce:
 
   case 44:
 /* Line 1787 of yacc.c  */
-#line 275 "vh_parser.y"
+#line 301 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           copy_cnt_object(&(yyval.nonterm)._.R.cnt, (yyval.nonterm)._.NUM.my_const);
@@ -1713,7 +1757,7 @@ yyreduce:
 
   case 45:
 /* Line 1787 of yacc.c  */
-#line 281 "vh_parser.y"
+#line 307 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 1;
                           copy_var_object(&(yyval.nonterm)._.R.var, get_var_object((yyvsp[(1) - (1)].nonterm)._.IDU.index));
@@ -1722,7 +1766,7 @@ yyreduce:
 
   case 46:
 /* Line 1787 of yacc.c  */
-#line 288 "vh_parser.y"
+#line 314 "vh_parser.y"
     {
                        (yyval.nonterm)._.NUM.my_const.my_type = V_FLOAT;
                        (yyval.nonterm)._.NUM.my_const.value_f = (yyvsp[(1) - (1)].numeralfloat);
@@ -1731,7 +1775,7 @@ yyreduce:
 
   case 47:
 /* Line 1787 of yacc.c  */
-#line 292 "vh_parser.y"
+#line 318 "vh_parser.y"
     {
                        (yyval.nonterm)._.NUM.my_const.my_type = V_INT;
                        (yyval.nonterm)._.NUM.my_const.value_i = (yyvsp[(1) - (1)].numeralint);
@@ -1740,7 +1784,7 @@ yyreduce:
 
   case 48:
 /* Line 1787 of yacc.c  */
-#line 298 "vh_parser.y"
+#line 324 "vh_parser.y"
     {
                 (yyval.nonterm)._.IDD.my_ID.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
                 (yyval.nonterm)._.IDD.my_ID.next = NULL;
@@ -1752,7 +1796,7 @@ yyreduce:
 
   case 49:
 /* Line 1787 of yacc.c  */
-#line 307 "vh_parser.y"
+#line 333 "vh_parser.y"
     {
              (yyval.nonterm)._.IDU.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
              strcpy((yyval.nonterm)._.IDU.my_label, (yyvsp[(1) - (1)].id));
@@ -1764,7 +1808,7 @@ yyreduce:
 
 
 /* Line 1787 of yacc.c  */
-#line 1768 "vh_parser.tab.c"
+#line 1812 "vh_parser.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1996,7 +2040,7 @@ yyreturn:
 
 
 /* Line 2050 of yacc.c  */
-#line 317 "vh_parser.y"
+#line 343 "vh_parser.y"
 
 
 int main() {

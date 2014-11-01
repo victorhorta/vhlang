@@ -87,8 +87,9 @@ typedef struct t_nonterm{
 		
 		struct 	{
 			int is_var;	
-			var_object var;
-			const_object cnt;
+			int index;
+			v_type my_type;
+			struct t_nonterm* next;
 		} E;
 		
 		struct 	{
@@ -198,6 +199,8 @@ int check_R_type(t_nonterm R, int operador);
 var_object get_var_object(int index);
 void copy_var_object(var_object* dest, var_object src);
 void copy_cnt_object(const_object* dest, const_object src);
+
+char* get_type_name(v_type t);
 
 void debug_var(var_object v);
 void debug_cnt(const_object v);

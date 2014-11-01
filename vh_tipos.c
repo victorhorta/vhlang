@@ -197,6 +197,13 @@ void set_default_values(var_object* temp_id) {
 int check_types(v_type t1, int operador, v_type t2) {
 	                // V_INT, FLOAT, CHAR, STRING, BOOLEAN
 	 switch(operador) {
+	 	case EQUALS:
+	 		if(t1==t2)
+	 			return t1;
+	 		else if(t1==V_FLOAT && t2==V_INT)
+	 			return V_FLOAT;
+	 		else
+	 			return -1;
 		case NOT:
 	 	case AND:
 	 	case OR:
@@ -289,6 +296,17 @@ var_object get_var_object(int index) {
 	return ALL_VARIABLES[index];
 }
 
+const_object get_const_object(int index) {
+	const_object temp;
+	
+	if(index > ALL_CONSTANTS_SIZE || index < 0) {
+		yyerror("Erro: index errado / nao encontrado em get_const");
+		return temp;
+	}
+
+	return ALL_CONSTANTS[index];
+}
+
 void copy_var_object(var_object* dest, var_object src) {
 	(*dest).my_label = (char*)malloc(strlen(src.my_label) + 1);
 	strcpy((*dest).my_label, src.my_label);
@@ -320,3 +338,14 @@ void copy_cnt_object(const_object* dest, const_object src) {
 	}
 	return;
 }
+
+char* get_type_name(v_type t) {
+	switch(t){
+		case V_INT:     return "INT"; break;
+		case V_FLOAT:   return "FLOAT"; break;
+		case V_CHAR:    return "CHAR"; break;
+		case V_STRING:  return "STRING"; break;
+		case V_BOOLEAN: return "BOOLEAN"; break;
+		default:        return "????"; break;
+	}
+};

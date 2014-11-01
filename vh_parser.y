@@ -16,6 +16,12 @@ int yyerror(const char *msg) {
     return 0;
 }
 
+int yyerror_type(v_type t1, v_type t2) {
+    printf("BARRO::: linha: %d -- mensagem: ", line_num);
+    printf("Type error ao atribuir tipo %s a variavel tipo %s!\n", get_type_name(t2), get_type_name(t1));
+    return 0;
+}
+
 extern void init_globais();
 %}
  
@@ -161,7 +167,15 @@ LI:     LI COMMA IDD {
 
 S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ENDIF
       | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S ENDIF
-      | IDU EQUALS E SEMI_COLON
+      | IDU EQUALS E SEMI_COLON {
+                                  int result_type = check_types(get_var_object($1._.IDU.index).my_type, EQUALS, $3._.E.my_type);
+                                  if(result_type == -1) {
+                                    yyerror_type($3._.E.my_type, get_var_object($1._.IDU.index).my_type);
+                                  } else {
+                                    printf("OK -- %s = %s\n",  get_type_name($3._.E.my_type), get_type_name(get_var_object($1._.IDU.index).my_type)); 
+                                  }
+
+                                }
       | B
       | E SEMI_COLON
 ;
@@ -174,11 +188,23 @@ E:      E AND R
       | E GREATER_OR_EQUAL R
       | E EQUAL_EQUAL R
       | E NOT_EQUAL R
-      | E PLUS R
+      | E PLUS R                {
+                                  $$._.E.is_var = 0;
+                                  $$._.E.index   = ($1._.R.is_var == 1 ? $1._.R.var.index : $1._.R.cnt.index);
+                                  $$._.E.my_type = ($1._.R.is_var == 1 ? $1._.R.var.my_type : $1._.R.cnt.my_type);
+                                  //TODO: jogar E   no topo da pilha
+                                  //TODO: jogar R   no topo da pilha
+                                  //TODO: jogar add no topo da pilha
+                                }
       | E MINUS R
       | E TIMES R
       | E DIVIDE R
-      | R
+      | R                       {
+                                  $$._.E.is_var = $1._.R.is_var;
+                                  $$._.E.index   = ($1._.R.is_var == 1 ? $1._.R.var.index : $1._.R.cnt.index);
+                                  $$._.E.my_type = ($1._.R.is_var == 1 ? $1._.R.var.my_type : $1._.R.cnt.my_type);
+                                  //TODO: jogar E no topo da pilha
+                                }
 ;
 
 R:      PLUS_PLUS R     {
