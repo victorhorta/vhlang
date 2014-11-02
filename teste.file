@@ -1,8 +1,8 @@
-var c : char;
-var w : string;
-var y : int;
-var z : float;
-var a : boolean;
+var n : int;
+var i : int;
+var f : int;
 {
-     z = y++;
+	i = 2;
+	f = 1;
+	f = f * i++;
 }

@@ -42,6 +42,7 @@ extern void init_globais();
  
 
 %token DUP
+%token POP
 %token NEG
 
 %token IF
@@ -95,7 +96,10 @@ extern void init_globais();
 %type <nonterm> P LDE DE DV B T LS LI S E R NUM IDD IDU MTHEN MELSE
 
 %%
-P:      LDE
+P:     BF LDE {generate_END();}
+;
+
+BF:           {generate_BEGIN();}
 ;
 
 LDE:    LDE  DE
@@ -191,10 +195,12 @@ S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF {
                                             printf("OK -- %s = %s\n",  get_type_name(get_var_object($1._.IDU.index).my_type), get_type_name($3._.E.my_type)); 
                                           }
                                           //generate_STORE_REF($1._.IDU.index, $1._.IDU.my_label);
+                                          generate_OP(DUP);
                                           generate_STORE_VAR($1._.IDU.index, $1._.IDU.my_label);
+                                          generate_OP(POP);
                                         }
       | B
-      | E SEMI_COLON
+      | E SEMI_COLON {generate_OP(POP);}
 ;
 
 MASSIGN: {generate_OP(DUP);}
@@ -484,14 +490,14 @@ R:      PLUS_PLUS R     {
                           $$._.R.cnt.my_type = V_BOOLEAN;
                           $$._.R.cnt.value_b = BOOLEANTRUE;
                           $$._.R.cnt.index = const_append($$._.R.cnt);
-                          generate_LOAD_CONST($$._.R.cnt.index, "TRUE");
+                          generate_LOAD_TRUE($$._.R.cnt.index, "TRUE");
                         }
       | FALSE           {
                           $$._.R.is_var = 0;
                           $$._.R.cnt.my_type = V_BOOLEAN;
                           $$._.R.cnt.value_b = BOOLEANFALSE;
                           $$._.R.cnt.index = const_append($$._.R.cnt);
-                          generate_LOAD_CONST($$._.R.cnt.index, "FALSE");
+                          generate_LOAD_FALSE($$._.R.cnt.index, "FALSE");
                         }
       | CHARACTER       {
                           $$._.R.is_var = 0;
@@ -528,6 +534,7 @@ R:      PLUS_PLUS R     {
       | IDU             {
                           $$._.R.is_var = 1;
                           copy_var_object(&$$._.R.var, get_var_object($1._.IDU.index));
+                          generate_LOAD_VAR($1._.IDU.index, $1._.IDU.my_label);
                         }
 ;
 
@@ -546,6 +553,7 @@ IDD:    ID    {
                 $$._.IDD.my_ID.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
                 $$._.IDD.my_ID.next = NULL;
                 strcpy($$._.IDD.my_ID.my_label, $1);
+                //generate_LOAD_VAR($$._.IDD.my_ID.index, $$._.IDD.my_ID.my_label);
               }
 ;
 
@@ -556,7 +564,7 @@ IDU:    ID {
              if($$._.IDU.index < 0)
                yyerror("Identificador nao encontrado!");
 
-             generate_LOAD_VAR($$._.IDU.index, $$._.IDU.my_label);
+             //generate_LOAD_VAR($$._.IDU.index, $$._.IDU.my_label);
            }
 ;
 

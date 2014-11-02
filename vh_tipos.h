@@ -217,6 +217,10 @@ int give_me_a_label();
 char* label_creator(int i);
 
 void generate_OP(int op);
+void generate_BEGIN();
+void generate_END();
+void generate_LOAD_TRUE(int n, char* s);
+void generate_LOAD_FALSE(int n, char* s);
 void generate_LOAD_CONST(int n, char* s);
 void generate_LOAD_VAR(int n, char* s);
 void generate_STORE_VAR(int n, char* s);

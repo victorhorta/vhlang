@@ -57,6 +57,7 @@ const_object* ALL_CONSTANTS;
 int ALL_LABELS = 0;
 int ALL_VARIABLES_SIZE = -1;
 int ALL_CONSTANTS_SIZE = -1;
+int FUNC_INDEX = 0;
 
 void init_globais() {
 	 variables = (char**)malloc(sizeof(char*) * MAX_VARS + 1); 
@@ -407,8 +408,9 @@ void generate_OP(int op) {
 	output = fopen("teste.output", "a");
 	char command[100];
 	switch(op) {
-		case NOT:         strncpy(command, "NOT", 100); break;
 		case DUP:         strncpy(command, "DUP", 100); break;
+		case POP:         strncpy(command, "POP", 100); break;
+		case NOT:         strncpy(command, "NOT", 100); break;
 		case NEG:         strncpy(command, "NEG", 100); break;
 		
 		case MINUS:       strncpy(command, "NEG", 100); break;
@@ -429,6 +431,34 @@ void generate_OP(int op) {
 	fprintf(output, "%s\n", command);
 	fclose(output);
 	return;
+}
+
+void generate_BEGIN() {
+	output = fopen("teste.output", "a");
+	fprintf(output, "BEGIN_FUNC\t%d %d %d\n", FUNC_INDEX++, 0, ALL_VARIABLES_SIZE);
+	fclose(output);
+	return;	
+}
+
+void generate_END() {
+	output = fopen("teste.output", "a");
+	fprintf(output, "END_FUNC\n");
+	fclose(output);
+	return;	
+}
+
+void generate_LOAD_TRUE(int n, char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "LOAD_TRUE\t%d\t(%s)\n", n, s);
+	fclose(output);
+	return;	
+}
+
+void generate_LOAD_FALSE(int n, char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "LOAD_FALSE\t%d\t(%s)\n", n, s);
+	fclose(output);
+	return;	
 }
 
 void generate_LOAD_CONST(int n, char* s) {
