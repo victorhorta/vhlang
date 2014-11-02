@@ -19,7 +19,7 @@ L_IF                 "if"
 L_ELSE               "else"
 L_ENDIF              "endif"
 L_WHILE              "while"
-
+L_RETURN             "return"
 
 L_CHAR               "char"
 L_BOOLEAN            "boolean"
@@ -75,6 +75,7 @@ L_LINEFEED          [\n]
 {L_ELSE}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ELSE;}
 {L_ENDIF}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ENDIF;}
 {L_WHILE}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return WHILE;}
+{L_RETURN}             {if(MODO_DEBUG) printf("passou no %s\n", yytext); return RETURN;}
 
 
 {L_CHAR}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_CHAR; return CHAR;}

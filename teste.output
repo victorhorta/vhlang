@@ -25,4 +25,6 @@ POP
 JMP_BW	0
 
 L1:
+LOAD_VAR	2	(f)
+RET
 END_FUNC

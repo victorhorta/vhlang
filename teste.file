@@ -6,4 +6,5 @@ var n, i, f: int;
     while(i <= n) {
 		f = f * i++;
 	}
+	return f;
 }

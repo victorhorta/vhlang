@@ -50,6 +50,7 @@ extern void init_globais();
 %right ELSE
 %token ENDIF
 %token WHILE
+%token RETURN
 
 %left EQUALS
 %left AND
@@ -291,6 +292,7 @@ S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF {
                                                                   }
       | B
       | E SEMI_COLON {generate_OP(POP);}
+      | RETURN E SEMI_COLON    {generate_STRING_LF("RET");};
 ;
 
 MASSIGN: {generate_OP(DUP);}
