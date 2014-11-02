@@ -1,5 +1,9 @@
-var a, b, c, d : int;
+var n, i, f: int;
 {
-	a = 2;
-	c = 3;
+	i = 2;
+	f = 1;
+
+    while(i <= n) {
+		f = f * i++;
+	}
 }

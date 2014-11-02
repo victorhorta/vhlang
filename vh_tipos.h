@@ -71,6 +71,10 @@ typedef struct t_nonterm{
 		} MELSE;
 
 		struct 	{
+			int label_index;
+		} MWHILE;
+
+		struct 	{
 			char* my_label;
 			int index;
 		} IDU;
@@ -232,4 +236,5 @@ void generate_STORE_REF(int n, char* label);
 void generate_LOAD_REF(int n, char* label);
 void generate_TJMP_FW(int n);
 void generate_JMP_FW(int n);
+void generate_JMP_BW(int n);
 void generate_STRING_LF(char* s);

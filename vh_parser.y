@@ -95,7 +95,7 @@ extern void init_globais();
 %token <numeralfloat> NUMERALFLOAT
 %token <numeralint> NUMERALINT
 
-%type <nonterm> P LDE DE DV B T LS LI S E R NUM IDD IDU MTHEN MELSE
+%type <nonterm> P LDE DE DV B T LS LI S E R NUM IDD IDU MTHEN MELSE MWHILE
 
 %%
 P:     BF LDE {generate_END();}
@@ -281,6 +281,14 @@ S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF {
                                           generate_STORE_VAR($1._.IDU.index, $1._.IDU.my_label);
                                           generate_OP(POP);
                                         }
+      | WHILE MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S {
+                                                                    if(check_types($4._.E.my_type, WHILE, 0) == -1) {
+                                                                      yyerror("Condicao do WHILE nao eh um boolean");
+                                                                    } else {
+                                                                      generate_JMP_BW($2._.MWHILE.label_index);
+                                                                      generate_STRING_LF(label_creator($6._.MTHEN.label_index));
+                                                                    }
+                                                                  }
       | B
       | E SEMI_COLON {generate_OP(POP);}
 ;
@@ -297,6 +305,11 @@ MELSE: {
          generate_JMP_FW($$._.MELSE.label_index);
          generate_STRING_LF(label_creator($$._.MELSE.label_index - 1));
        }
+;
+MWHILE: {
+          $$._.MWHILE.label_index = give_me_a_label();
+          generate_STRING_LF(label_creator($$._.MELSE.label_index));
+        }
 ;
 
 E:      E AND R                 {

@@ -209,6 +209,7 @@ int check_types(v_type t1, int operador, v_type t2) {
  		break;
 	 	
 	 	case IF:
+	 	case WHILE:
 	 		if(t1 == V_BOOLEAN)
 	 			return t1;
 	 		else
@@ -512,6 +513,13 @@ void generate_TJMP_FW(int n) {
 void generate_JMP_FW(int n) {
 	output = fopen("teste.output", "a");
 	fprintf(output, "JMP_FW\t%d\n", n);
+	fclose(output);
+	return;
+}
+
+void generate_JMP_BW(int n) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "JMP_BW\t%d\n", n);
 	fclose(output);
 	return;
 }
