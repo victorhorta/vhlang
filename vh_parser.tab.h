@@ -52,42 +52,43 @@ extern int yydebug;
      IF = 261,
      ELSE = 262,
      ENDIF = 263,
-     EQUALS = 264,
-     AND = 265,
-     OR = 266,
-     LESS_THAN = 267,
-     GREATER_THAN = 268,
-     LESS_OR_EQUAL = 269,
-     GREATER_OR_EQUAL = 270,
-     NOT_EQUAL = 271,
-     EQUAL_EQUAL = 272,
-     PLUS = 273,
-     MINUS = 274,
-     TIMES = 275,
-     DIVIDE = 276,
-     NOT = 277,
-     PLUS_PLUS = 278,
-     MINUS_MINUS = 279,
-     INTEGER = 280,
-     STRING = 281,
-     FLOAT = 282,
-     BOOLEAN = 283,
-     CHAR = 284,
-     VAR = 285,
-     COLON = 286,
-     SEMI_COLON = 287,
-     COMMA = 288,
-     LEFT_BRACES = 289,
-     RIGHT_BRACES = 290,
-     LEFT_PARENTHESIS = 291,
-     RIGHT_PARENTHESIS = 292,
-     ID = 293,
-     STRINGVAL = 294,
-     TRUE = 295,
-     FALSE = 296,
-     CHARACTER = 297,
-     NUMERALFLOAT = 298,
-     NUMERALINT = 299
+     WHILE = 264,
+     EQUALS = 265,
+     AND = 266,
+     OR = 267,
+     LESS_THAN = 268,
+     GREATER_THAN = 269,
+     LESS_OR_EQUAL = 270,
+     GREATER_OR_EQUAL = 271,
+     NOT_EQUAL = 272,
+     EQUAL_EQUAL = 273,
+     PLUS = 274,
+     MINUS = 275,
+     TIMES = 276,
+     DIVIDE = 277,
+     NOT = 278,
+     PLUS_PLUS = 279,
+     MINUS_MINUS = 280,
+     INTEGER = 281,
+     STRING = 282,
+     FLOAT = 283,
+     BOOLEAN = 284,
+     CHAR = 285,
+     VAR = 286,
+     COLON = 287,
+     SEMI_COLON = 288,
+     COMMA = 289,
+     LEFT_BRACES = 290,
+     RIGHT_BRACES = 291,
+     LEFT_PARENTHESIS = 292,
+     RIGHT_PARENTHESIS = 293,
+     ID = 294,
+     STRINGVAL = 295,
+     TRUE = 296,
+     FALSE = 297,
+     CHARACTER = 298,
+     NUMERALFLOAT = 299,
+     NUMERALINT = 300
    };
 #endif
 
@@ -96,7 +97,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2053 of yacc.c  */
-#line 32 "vh_parser.y"
+#line 33 "vh_parser.y"
 
     int numeralint;
     float numeralfloat;
@@ -109,7 +110,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 113 "vh_parser.tab.h"
+#line 114 "vh_parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

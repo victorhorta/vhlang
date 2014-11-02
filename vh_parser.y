@@ -11,6 +11,7 @@ extern int yyparse();
 extern FILE *yyin;
 extern FILE *output;
 extern int line_num;
+
 int MODO_DEBUG = 1;
 
 int yyerror(const char *msg) {
@@ -48,6 +49,7 @@ extern void init_globais();
 %token IF
 %right ELSE
 %token ENDIF
+%token WHILE
 
 %left EQUALS
 %left AND
@@ -111,12 +113,47 @@ DE:     DV
 ;
 
 DV:     VAR LI COLON T SEMI_COLON {
+
+
+
+  //////////////////////////////////////////////////////////////////
                                     // Primeiro, vamos recuperar o tipo que foi definido
                                     v_type defined_type = $4._.T.type;
-                                    
+                                    var_object temp_object;
+
+                                    int x;
+                                    for(x = 0; $2._.LI.positions[x] != -1; x++) {
+                                      /*
+                                      temp_object = get_var_object($2._.LI.positions[x]);
+
+                                      temp_object.my_type = defined_type;
+                                      set_default_values(&  temp_object);
+                                      debug_var(temp_object);
+                                      */
+
+                                      set_var_type($2._.LI.positions[x], defined_type);
+
+                                      debug_var(get_var_object($2._.LI.positions[x]));
+                                    }
+
+                                    /**var_object* temp = (var_object*)malloc(sizeof(var_object));
+                                    temp = $2._.LI.ids_list;
+
+                                    do {
+                                      temp->my_type = defined_type;
+                                      set_default_values(temp);
+                                      temp->index = var_scan_or_append(*temp);
+                                      debug_var(*temp);
+
+                                      temp = temp->next;
+                                    } while(temp != NULL);
+                                    **/
+
+                                    /*
                                     // Vamos agora iterar sobre todas as variaveis declaradas em LI
                                     var_object* temp_id = $2._.LI.ids_list;
                                     temp_id->next = $2._.LI.ids_list->next;
+
                                     while(temp_id != NULL) {
                                       // Setando o tipo e valores default
                                       temp_id->my_type = defined_type;
@@ -124,15 +161,15 @@ DV:     VAR LI COLON T SEMI_COLON {
 
                                       // Inserindo as variaveis em nosso array de variaveis e retornando o indice de cada uma delas
                                       temp_id->index = var_scan_or_append(*temp_id);
-                                      
                                       debug_var(*temp_id);
 
                                       temp_id = temp_id->next;
                                     }
-                                    
+                                  
                                     // Guardando referencia para o inicio da lista
                                     $$._.DV.ids_list = (var_object*)malloc(sizeof(var_object));
                                     $$._.DV.ids_list = $2._.LI.ids_list;
+                                    */
                                   }
 ;
 
@@ -155,21 +192,66 @@ LS:     LS S
 
 
 LI:     LI COMMA IDD {
-                       $3._.IDD.my_ID.next = (var_object*)malloc(sizeof(var_object));
-                       $3._.IDD.my_ID.next = $1._.LI.ids_list;
+                      int x;
+                      printf("antes:\n");
+                      for(x = 0; x < MAX_VARS; x++) {
+                        $$._.LI.positions[x] = $1._.LI.positions[x];
+                        printf("%d",$$._.LI.positions[x]);
+                      }
+                      printf("\n");
 
-                       $1._.LI.ids_list = &$3._.IDD.my_ID;
+                      for(x = 0; $$._.LI.positions[x] != -1; x++);
+                      printf("primeira posicao com -1: %d\n", x);
+                      printf("valor do novo index: %d\n", $3._.IDD.my_ID.index);
+                      $$._.LI.positions[x] = $3._.IDD.my_ID.index;
+
+                      printf("depois:\n");
+                      for(x = 0; x < MAX_VARS; x++) {
+                        printf("%d",$$._.LI.positions[x]);
+                      }
+                      printf("\n\n");
+
+
+                       /**$$._.LI.ids_list = (var_object*)malloc(sizeof(var_object));
+                       copy_var_object($$._.LI.ids_list, *$1._.LI.ids_list);
+
+                       var_object* temp = (var_object*)malloc(sizeof(var_object));
+                       do{
+                         temp = $$._.LI.ids_list->next;
+                       } while(temp != NULL);
+
+                       copy_var_object(temp, $3._.IDD.my_ID);
+                       **/
+                       /*
+                       $3._.IDD.my_ID.next = (var_object*)malloc(sizeof(var_object));
+                       copy_var_object($3._.IDD.my_ID.next, *$1._.LI.ids_list);
+                       //$3._.IDD.my_ID.next = $1._.LI.ids_list;
+
+                       //$1._.LI.ids_list = &$3._.IDD.my_ID;
 
                        $$._.LI.ids_list = (var_object*)malloc(sizeof(var_object));
-                       $$._.LI.ids_list = &$1._.IDD.my_ID;
+                       copy_var_object($$._.LI.ids_list, $3._.IDD.my_ID);
+                       //$$._.LI.ids_list = &$3._.IDD.my_ID;
+                       */
+                       //if(MODO_DEBUG)
+                       //  printf("my_label: %s\n", $3._.IDD.my_ID.my_label);
                      }
 
       | IDD          {
+                      int x;
+                      for(x = 0; x < MAX_VARS; x++) {
+                        $$._.LI.positions[x] = -1;
+                      }
+                      
+                      $$._.LI.positions[0] = $1._.IDD.my_ID.index;
+                      /*
                        $$._.LI.ids_list = (var_object*)malloc(sizeof(var_object));
                        $$._.LI.ids_list = &$1._.IDD.my_ID;
+                       $$._.LI.ids_list->next = NULL;
                        
                        if(MODO_DEBUG)
                          printf("my_label: %s\n", $$._.LI.ids_list->my_label);
+                      */
                      }
 ;
 
@@ -553,6 +635,8 @@ IDD:    ID    {
                 $$._.IDD.my_ID.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
                 $$._.IDD.my_ID.next = NULL;
                 strcpy($$._.IDD.my_ID.my_label, $1);
+
+                $$._.IDD.my_ID.index = var_scan_or_append($$._.IDD.my_ID);
                 //generate_LOAD_VAR($$._.IDD.my_ID.index, $$._.IDD.my_ID.my_label);
               }
 ;

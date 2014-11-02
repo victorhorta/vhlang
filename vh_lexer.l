@@ -18,6 +18,8 @@ int line_num = 1;
 L_IF                 "if"
 L_ELSE               "else"
 L_ENDIF              "endif"
+L_WHILE              "while"
+
 
 L_CHAR               "char"
 L_BOOLEAN            "boolean"
@@ -72,6 +74,8 @@ L_LINEFEED          [\n]
 {L_IF}                 {if(MODO_DEBUG) printf("passou no %s\n", yytext); return IF;}
 {L_ELSE}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ELSE;}
 {L_ENDIF}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return ENDIF;}
+{L_WHILE}              {if(MODO_DEBUG) printf("passou no %s\n", yytext); return WHILE;}
+
 
 {L_CHAR}               {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_CHAR; return CHAR;}
 {L_BOOLEAN}            {if(MODO_DEBUG) printf("passou no %s\n", yytext); yylval.vtype = V_BOOLEAN; return BOOLEAN;}

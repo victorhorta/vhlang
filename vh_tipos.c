@@ -349,6 +349,12 @@ void copy_var_object(var_object* dest, var_object src) {
 		(*dest).value_s = (char*)malloc(strlen(src.value_s) + 1);
 		strcpy((*dest).value_s, src.value_s);	
 	}
+
+	if(src.next != NULL) {
+		(*dest).next = (var_object*)malloc(sizeof(var_object));
+		copy_var_object((*dest).next, *(src.next));
+	}
+
 	return;
 }
 
@@ -514,5 +520,15 @@ void generate_STRING_LF(char* s) {
 	output = fopen("teste.output", "a");
 	fprintf(output, "%s\n", s);
 	fclose(output);
+	return;
+}
+
+void set_var_type(int index, v_type t) {
+	if(index > ALL_VARIABLES_SIZE || index < 0) {
+		yyerror("Erro: index errado / nao encontrado em get_var");
+		return;
+	}
+	ALL_VARIABLES[index].my_type = t;
+	set_default_values(&ALL_VARIABLES[index]);
 	return;
 }

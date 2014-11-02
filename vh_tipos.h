@@ -105,7 +105,8 @@ typedef struct t_nonterm{
 		} S;
 		
 		struct  {
-		  struct var_object* ids_list;
+			int positions[MAX_VARS];
+		  //struct var_object* ids_list;
 		} LI;
 		
 		struct 	{
@@ -204,6 +205,9 @@ void set_default_values(var_object* temp_id);
  */
 int check_types(v_type t1, int operador, v_type t2);
 int check_R_type(t_nonterm R, int operador);
+
+
+void set_var_type(int index, v_type t);
 
 var_object get_var_object(int index);
 void copy_var_object(var_object* dest, var_object src);

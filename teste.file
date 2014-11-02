@@ -1,8 +1,5 @@
-var n : int;
-var i : int;
-var f : int;
+var a, b, c, d : int;
 {
-	i = 2;
-	f = 1;
-	f = f * i++;
+	a = 2;
+	c = 3;
 }
