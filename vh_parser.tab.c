@@ -538,11 +538,11 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    97,    97,   100,   101,   104,   105,   108,   134,   138,
-     139,   140,   141,   142,   147,   148,   152,   162,   171,   172,
-     173,   182,   183,   186,   188,   190,   193,   194,   195,   196,
-     197,   198,   199,   200,   201,   208,   209,   210,   211,   219,
-     235,   251,   267,   284,   290,   296,   302,   310,   323,   330,
-     334,   340,   349
+     139,   140,   141,   142,   147,   148,   152,   162,   171,   178,
+     185,   194,   195,   198,   200,   205,   212,   225,   238,   251,
+     264,   277,   290,   303,   316,   329,   342,   355,   368,   376,
+     392,   408,   424,   441,   448,   455,   465,   474,   487,   494,
+     498,   504,   511
 };
 #endif
 
@@ -1586,9 +1586,33 @@ yyreduce:
                      }
     break;
 
+  case 18:
+/* Line 1787 of yacc.c  */
+#line 171 "vh_parser.y"
+    {
+                                                                if(check_types((yyvsp[(3) - (7)].nonterm)._.E.my_type, IF, 0) == -1) {
+                                                                  yyerror("Condicao do IF nao eh um boolean");
+                                                                } else {
+                                                                  generate_STRING_LF(label_creator((yyvsp[(5) - (7)].nonterm)._.MTHEN.label_index));
+                                                                }
+                                                              }
+    break;
+
+  case 19:
+/* Line 1787 of yacc.c  */
+#line 178 "vh_parser.y"
+    {
+                                                                             if(check_types((yyvsp[(3) - (10)].nonterm)._.E.my_type, IF, 0) == -1) {
+                                                                               yyerror("Condicao do IF nao eh um boolean");
+                                                                             } else {
+                                                                               generate_STRING_LF(label_creator((yyvsp[(8) - (10)].nonterm)._.MELSE.label_index));
+                                                                             }
+                                                                           }
+    break;
+
   case 20:
 /* Line 1787 of yacc.c  */
-#line 173 "vh_parser.y"
+#line 185 "vh_parser.y"
     {
                                           int result_type = check_types(get_var_object((yyvsp[(1) - (5)].nonterm)._.IDU.index).my_type, EQUALS, (yyvsp[(4) - (5)].nonterm)._.E.my_type);
                                           if(result_type == -1) {
@@ -1602,37 +1626,248 @@ yyreduce:
 
   case 23:
 /* Line 1787 of yacc.c  */
-#line 186 "vh_parser.y"
+#line 198 "vh_parser.y"
     {generate_OP(DUP);}
     break;
 
   case 24:
 /* Line 1787 of yacc.c  */
-#line 188 "vh_parser.y"
-    {printf("THENNNNNNNN\n");}
+#line 200 "vh_parser.y"
+    {
+         (yyval.nonterm)._.MTHEN.label_index = give_me_a_label();
+         generate_TJMP_FW((yyval.nonterm)._.MTHEN.label_index);
+       }
     break;
 
   case 25:
 /* Line 1787 of yacc.c  */
-#line 190 "vh_parser.y"
-    {printf("ELSEEEEEEEE\n");}
+#line 205 "vh_parser.y"
+    {
+         (yyval.nonterm)._.MELSE.label_index = give_me_a_label();
+         generate_JMP_FW((yyval.nonterm)._.MELSE.label_index);
+         generate_STRING_LF(label_creator((yyval.nonterm)._.MELSE.label_index - 1));
+       }
+    break;
+
+  case 26:
+/* Line 1787 of yacc.c  */
+#line 212 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, AND, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(AND);
+                                  }
+                                }
+    break;
+
+  case 27:
+/* Line 1787 of yacc.c  */
+#line 225 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, OR, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(OR);
+                                  }
+                                }
+    break;
+
+  case 28:
+/* Line 1787 of yacc.c  */
+#line 238 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, LESS_THAN, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(LESS_THAN);
+                                  }
+                                }
+    break;
+
+  case 29:
+/* Line 1787 of yacc.c  */
+#line 251 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, GREATER_THAN, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(GREATER_THAN);
+                                  }
+                                }
+    break;
+
+  case 30:
+/* Line 1787 of yacc.c  */
+#line 264 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, LESS_OR_EQUAL, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(LESS_OR_EQUAL);
+                                  }
+                                }
+    break;
+
+  case 31:
+/* Line 1787 of yacc.c  */
+#line 277 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, GREATER_OR_EQUAL, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(GREATER_OR_EQUAL);
+                                  }
+                                }
+    break;
+
+  case 32:
+/* Line 1787 of yacc.c  */
+#line 290 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, EQUAL_EQUAL, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(EQUAL_EQUAL);
+                                  }
+                                }
+    break;
+
+  case 33:
+/* Line 1787 of yacc.c  */
+#line 303 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, NOT_EQUAL, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(NOT_EQUAL);
+                                  }
+                                }
     break;
 
   case 34:
 /* Line 1787 of yacc.c  */
-#line 201 "vh_parser.y"
+#line 316 "vh_parser.y"
     {
                                   (yyval.nonterm)._.E.is_var = 0;
-                                  (yyval.nonterm)._.E.index   = ((yyvsp[(1) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (3)].nonterm)._.R.var.index : (yyvsp[(1) - (3)].nonterm)._.R.cnt.index);
-                                  (yyval.nonterm)._.E.my_type = ((yyvsp[(1) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (3)].nonterm)._.R.var.my_type : (yyvsp[(1) - (3)].nonterm)._.R.cnt.my_type);
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
                                   
-                                  generate_OP(PLUS);
+                                  int r_type = check_types(t1, PLUS, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(PLUS);
+                                  }
+                                }
+    break;
+
+  case 35:
+/* Line 1787 of yacc.c  */
+#line 329 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, MINUS, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(MINUS);
+                                  }
+                                }
+    break;
+
+  case 36:
+/* Line 1787 of yacc.c  */
+#line 342 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, TIMES, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(TIMES);
+                                  }
+                                }
+    break;
+
+  case 37:
+/* Line 1787 of yacc.c  */
+#line 355 "vh_parser.y"
+    {
+                                  (yyval.nonterm)._.E.is_var = 0;
+                                  v_type t1 = (yyvsp[(1) - (3)].nonterm)._.E.my_type;
+                                  v_type t2 = ((yyvsp[(3) - (3)].nonterm)._.R.is_var == 1 ? (yyvsp[(3) - (3)].nonterm)._.R.var.my_type : (yyvsp[(3) - (3)].nonterm)._.R.cnt.my_type);
+                                  
+                                  int r_type = check_types(t1, DIVIDE, t2);
+                                  if(r_type == -1)
+                                      yyerror("Type error!");
+                                  else {
+                                    (yyval.nonterm)._.E.my_type = r_type;
+                                    generate_OP(DIVIDE);
+                                  }
                                 }
     break;
 
   case 38:
 /* Line 1787 of yacc.c  */
-#line 211 "vh_parser.y"
+#line 368 "vh_parser.y"
     {
                                   (yyval.nonterm)._.E.is_var = (yyvsp[(1) - (1)].nonterm)._.R.is_var;
                                   (yyval.nonterm)._.E.index   = ((yyvsp[(1) - (1)].nonterm)._.R.is_var == 1 ? (yyvsp[(1) - (1)].nonterm)._.R.var.index : (yyvsp[(1) - (1)].nonterm)._.R.cnt.index);
@@ -1643,7 +1878,7 @@ yyreduce:
 
   case 39:
 /* Line 1787 of yacc.c  */
-#line 219 "vh_parser.y"
+#line 376 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, PLUS_PLUS, t1);
@@ -1664,7 +1899,7 @@ yyreduce:
 
   case 40:
 /* Line 1787 of yacc.c  */
-#line 235 "vh_parser.y"
+#line 392 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, MINUS_MINUS, t1);
@@ -1685,7 +1920,7 @@ yyreduce:
 
   case 41:
 /* Line 1787 of yacc.c  */
-#line 251 "vh_parser.y"
+#line 408 "vh_parser.y"
     {
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
                           int r_type = check_types(t1, MINUS, t1);
@@ -1706,7 +1941,7 @@ yyreduce:
 
   case 42:
 /* Line 1787 of yacc.c  */
-#line 267 "vh_parser.y"
+#line 424 "vh_parser.y"
     {
                           // checking type
                           v_type t1 = ((yyvsp[(2) - (2)].nonterm)._.R.is_var == 1 ? (yyvsp[(2) - (2)].nonterm)._.R.var.my_type : (yyvsp[(2) - (2)].nonterm)._.R.cnt.my_type);
@@ -1722,46 +1957,52 @@ yyreduce:
                                 (yyval.nonterm)._.R.cnt.my_type = check_types(t1, NOT, t1);
                               }
                           }
-                          //TODO: fprintf comando
+                          generate_OP(NOT);
                         }
     break;
 
   case 43:
 /* Line 1787 of yacc.c  */
-#line 284 "vh_parser.y"
+#line 441 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_BOOLEAN;
                           (yyval.nonterm)._.R.cnt.value_b = BOOLEANTRUE;
                           (yyval.nonterm)._.R.cnt.index = const_append((yyval.nonterm)._.R.cnt);
+                          generate_LOAD_CONST((yyval.nonterm)._.R.cnt.index, "TRUE");
                         }
     break;
 
   case 44:
 /* Line 1787 of yacc.c  */
-#line 290 "vh_parser.y"
+#line 448 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_BOOLEAN;
                           (yyval.nonterm)._.R.cnt.value_b = BOOLEANFALSE;
                           (yyval.nonterm)._.R.cnt.index = const_append((yyval.nonterm)._.R.cnt);
+                          generate_LOAD_CONST((yyval.nonterm)._.R.cnt.index, "FALSE");
                         }
     break;
 
   case 45:
 /* Line 1787 of yacc.c  */
-#line 296 "vh_parser.y"
+#line 455 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           (yyval.nonterm)._.R.cnt.my_type = V_CHAR;
                           (yyval.nonterm)._.R.cnt.value_c = (yyvsp[(1) - (1)].character);
                           (yyval.nonterm)._.R.cnt.index = const_append((yyval.nonterm)._.R.cnt);
+                          
+                          char* buffer = (char*)malloc(4*sizeof(char)+1);
+                          snprintf(buffer, 4, "'%c'", (yyval.nonterm)._.R.cnt.value_c);
+                          generate_LOAD_CONST((yyval.nonterm)._.R.cnt.index, buffer);
                         }
     break;
 
   case 46:
 /* Line 1787 of yacc.c  */
-#line 302 "vh_parser.y"
+#line 465 "vh_parser.y"
     {
                           printf("string que veio: %s\n", (yyvsp[(1) - (1)].string));
                           (yyval.nonterm)._.R.is_var = 0;
@@ -1769,12 +2010,13 @@ yyreduce:
                           (yyval.nonterm)._.R.cnt.value_s = (char*)malloc(strlen((yyvsp[(1) - (1)].string)) + 1);
                           strcpy((yyval.nonterm)._.R.cnt.value_s, (yyvsp[(1) - (1)].string));
                           (yyval.nonterm)._.R.cnt.index = const_append((yyval.nonterm)._.R.cnt);
+                          generate_LOAD_CONST((yyval.nonterm)._.R.cnt.index, (yyval.nonterm)._.R.cnt.value_s);
                         }
     break;
 
   case 47:
 /* Line 1787 of yacc.c  */
-#line 310 "vh_parser.y"
+#line 474 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 0;
                           copy_cnt_object(&(yyval.nonterm)._.R.cnt, (yyvsp[(1) - (1)].nonterm)._.NUM.my_const);
@@ -1792,7 +2034,7 @@ yyreduce:
 
   case 48:
 /* Line 1787 of yacc.c  */
-#line 323 "vh_parser.y"
+#line 487 "vh_parser.y"
     {
                           (yyval.nonterm)._.R.is_var = 1;
                           copy_var_object(&(yyval.nonterm)._.R.var, get_var_object((yyvsp[(1) - (1)].nonterm)._.IDU.index));
@@ -1801,7 +2043,7 @@ yyreduce:
 
   case 49:
 /* Line 1787 of yacc.c  */
-#line 330 "vh_parser.y"
+#line 494 "vh_parser.y"
     {
                        (yyval.nonterm)._.NUM.my_const.my_type = V_FLOAT;
                        (yyval.nonterm)._.NUM.my_const.value_f = (yyvsp[(1) - (1)].numeralfloat);
@@ -1810,7 +2052,7 @@ yyreduce:
 
   case 50:
 /* Line 1787 of yacc.c  */
-#line 334 "vh_parser.y"
+#line 498 "vh_parser.y"
     {
                        (yyval.nonterm)._.NUM.my_const.my_type = V_INT;
                        (yyval.nonterm)._.NUM.my_const.value_i = (yyvsp[(1) - (1)].numeralint);
@@ -1819,19 +2061,17 @@ yyreduce:
 
   case 51:
 /* Line 1787 of yacc.c  */
-#line 340 "vh_parser.y"
+#line 504 "vh_parser.y"
     {
                 (yyval.nonterm)._.IDD.my_ID.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
                 (yyval.nonterm)._.IDD.my_ID.next = NULL;
                 strcpy((yyval.nonterm)._.IDD.my_ID.my_label, (yyvsp[(1) - (1)].id));
-                //if(MODO_DEBUG)
-                //  printf("labelwwww: %d\n", strlen($1));
               }
     break;
 
   case 52:
 /* Line 1787 of yacc.c  */
-#line 349 "vh_parser.y"
+#line 511 "vh_parser.y"
     {
              (yyval.nonterm)._.IDU.my_label = (char*)malloc(sizeof(char) * MAX_VAR_LENGTH + 1);
              strcpy((yyval.nonterm)._.IDU.my_label, (yyvsp[(1) - (1)].id));
@@ -1845,7 +2085,7 @@ yyreduce:
 
 
 /* Line 1787 of yacc.c  */
-#line 1849 "vh_parser.tab.c"
+#line 2089 "vh_parser.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2077,7 +2317,7 @@ yyreturn:
 
 
 /* Line 2050 of yacc.c  */
-#line 361 "vh_parser.y"
+#line 523 "vh_parser.y"
 
 
 int main() {

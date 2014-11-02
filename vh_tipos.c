@@ -199,6 +199,11 @@ void set_default_values(var_object* temp_id) {
 int check_types(v_type t1, int operador, v_type t2) {
 	                // V_INT, FLOAT, CHAR, STRING, BOOLEAN
 	 switch(operador) {
+	 	case IF:
+	 		if(t1 == V_BOOLEAN)
+	 			return t1;
+	 		else
+	 			return -1;
 	 	case EQUALS:
 	 		if(t1==t2)
 	 			return t1;
@@ -219,6 +224,15 @@ int check_types(v_type t1, int operador, v_type t2) {
 		case MINUS:
 		case TIMES:
 		case DIVIDE:
+			if(t1==V_INT && t2==V_INT)
+				return V_INT;
+		    else if((t1==V_FLOAT && t2==V_FLOAT) ||
+			        (t1==V_INT && t2==V_FLOAT)   ||
+			        (t1==V_FLOAT && t2==V_INT)   )
+				return V_FLOAT;
+			else
+	 			return -1;
+		break;
 		case PLUS_PLUS:
 		case MINUS_MINUS:
 		case LESS_THAN:
@@ -356,34 +370,50 @@ char* get_type_name(v_type t) {
 };
 
 
-char* give_me_a_label() {
+char* label_creator(int i) {
 	//snprintf(label, 4, "%04d", ALL_LABELS);
-	int pos1, pos2, pos3;
-	char* label = (char*)malloc(4*sizeof(char)+1);
+	// int pos1, pos2, pos3;
+	char* label = (char*)malloc(6*sizeof(char)+1);
 
-	pos1 = (ALL_LABELS - ALL_LABELS%100)/100;
-	pos3 = (ALL_LABELS%10);
-	pos2 = (ALL_LABELS - 100*pos1 - pos3)/10;
+	// pos1 = (i - i%100)/100;
+	// pos3 = (i%10);
+	// pos2 = (i - 100*pos1 - pos3)/10;
 
-	label[0] = 'L';
-	label[1] = (char)(((int)'0')+pos1);
-	label[2] = (char)(((int)'0')+pos2);
-	label[3] = (char)(((int)'0')+pos3);
+	// label[0] = 'L';
+	// label[1] = (char)(((int)'0')+pos1);
+	// label[2] = (char)(((int)'0')+pos2);
+	// label[3] = (char)(((int)'0')+pos3);
+	snprintf(label, 6, "\nL%d:", i);
 
-	ALL_LABELS++;
 	return label;
+}
+
+int give_me_a_label() {
+	return ALL_LABELS++;
 }
 
 void generate_OP(int op) {
 	output = fopen("teste.output", "a");
 	char command[100];
 	switch(op) {
+		case NOT:         strncpy(command, "NOT", 100); break;
 		case PLUS_PLUS:   strncpy(command, "DUP\nDUP\nDE_REF 1\nINC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
 		case MINUS_MINUS: strncpy(command, "DUP\nDUP\nDE_REF 1\nDEC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
 		case MINUS:       strncpy(command, "NEG", 100); break;
-		case NOT:         strncpy(command, "NOT", 100); break;
 		case PLUS:        strncpy(command, "ADD", 100); break;
+		case TIMES:       strncpy(command, "MUL", 100); break;
+		case DIVIDE:      strncpy(command, "DIV", 100); break;
+
 		case DUP:         strncpy(command, "DUP", 100); break;
+
+		case AND:              strncpy(command, "AND", 100); break;
+		case OR:               strncpy(command, "OR", 100); break;
+		case LESS_THAN:        strncpy(command, "LT", 100); break;
+		case GREATER_THAN:     strncpy(command, "GT", 100); break;
+		case LESS_OR_EQUAL:    strncpy(command, "LE", 100); break;
+		case GREATER_OR_EQUAL: strncpy(command, "GE", 100); break;
+		case EQUAL_EQUAL:      strncpy(command, "EQ", 100); break;
+		case NOT_EQUAL:        strncpy(command, "NE", 100); break;
 	}
 	
 	fprintf(output, "%s\n", command);
@@ -410,4 +440,25 @@ void generate_STORE_REF(int n, char* label) {
 	fprintf(output, "STORE_REF\t%d\t(%s)\n", n, label);
 	fclose(output);
 	return;			
+}
+
+void generate_TJMP_FW(int n) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "TJMP_FW\t\tL%d\n", n);
+	fclose(output);
+	return;				
+}
+
+void generate_JMP_FW(int n) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "JMP_FW\t%d\n", n);
+	fclose(output);
+	return;
+}
+
+void generate_STRING_LF(char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "%s\n", s);
+	fclose(output);
+	return;
 }

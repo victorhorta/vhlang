@@ -63,6 +63,14 @@ typedef struct t_nonterm{
 		} P;
 
 		struct 	{
+			int label_index;
+		} MTHEN;		
+
+		struct 	{
+			int label_index;
+		} MELSE;
+
+		struct 	{
 			char* my_label;
 			int index;
 		} IDU;
@@ -205,9 +213,13 @@ char* get_type_name(v_type t);
 
 void debug_var(var_object v);
 void debug_cnt(const_object v);
-char* give_me_a_label();
+int give_me_a_label();
+char* label_creator(int i);
 
 void generate_OP(int op);
 void generate_LOAD_CONST(int n, char* s);
 void generate_STORE_REF(int n, char* label);
 void generate_LOAD_REF(int n, char* label);
+void generate_TJMP_FW(int n);
+void generate_JMP_FW(int n);
+void generate_STRING_LF(char* s);
