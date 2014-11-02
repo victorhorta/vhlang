@@ -199,11 +199,21 @@ void set_default_values(var_object* temp_id) {
 int check_types(v_type t1, int operador, v_type t2) {
 	                // V_INT, FLOAT, CHAR, STRING, BOOLEAN
 	 switch(operador) {
+	 	case PLUS_PLUS:
+	 	case MINUS_MINUS:
+	 		if(t1==V_INT || t1 == V_FLOAT)
+	 			return t1;
+	 		else
+	 			return -1;
+ 		break;
+	 	
 	 	case IF:
 	 		if(t1 == V_BOOLEAN)
 	 			return t1;
 	 		else
 	 			return -1;
+ 		break;
+	 	
 	 	case EQUALS:
 	 		if(t1==t2)
 	 			return t1;
@@ -211,6 +221,8 @@ int check_types(v_type t1, int operador, v_type t2) {
 	 			return V_FLOAT;
 	 		else
 	 			return -1;
+ 		break;
+
 		case NOT:
 	 	case AND:
 	 	case OR:
@@ -233,8 +245,7 @@ int check_types(v_type t1, int operador, v_type t2) {
 			else
 	 			return -1;
 		break;
-		case PLUS_PLUS:
-		case MINUS_MINUS:
+		
 		case LESS_THAN:
 		case LESS_OR_EQUAL:
 		case GREATER_THAN:
@@ -397,14 +408,13 @@ void generate_OP(int op) {
 	char command[100];
 	switch(op) {
 		case NOT:         strncpy(command, "NOT", 100); break;
-		case PLUS_PLUS:   strncpy(command, "DUP\nDUP\nDE_REF 1\nINC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
-		case MINUS_MINUS: strncpy(command, "DUP\nDUP\nDE_REF 1\nDEC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
+		case DUP:         strncpy(command, "DUP", 100); break;
+		case NEG:         strncpy(command, "NEG", 100); break;
+		
 		case MINUS:       strncpy(command, "NEG", 100); break;
 		case PLUS:        strncpy(command, "ADD", 100); break;
 		case TIMES:       strncpy(command, "MUL", 100); break;
 		case DIVIDE:      strncpy(command, "DIV", 100); break;
-
-		case DUP:         strncpy(command, "DUP", 100); break;
 
 		case AND:              strncpy(command, "AND", 100); break;
 		case OR:               strncpy(command, "OR", 100); break;
@@ -424,6 +434,20 @@ void generate_OP(int op) {
 void generate_LOAD_CONST(int n, char* s) {
 	output = fopen("teste.output", "a");
 	fprintf(output, "LOAD_CONST\t%d\t(%s)\n", n, s);
+	fclose(output);
+	return;	
+}
+
+void generate_LOAD_VAR(int n, char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "LOAD_VAR\t%d\t(%s)\n", n, s);
+	fclose(output);
+	return;	
+}
+
+void generate_STORE_VAR(int n, char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "STORE_VAR\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }

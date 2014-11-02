@@ -218,6 +218,8 @@ char* label_creator(int i);
 
 void generate_OP(int op);
 void generate_LOAD_CONST(int n, char* s);
+void generate_LOAD_VAR(int n, char* s);
+void generate_STORE_VAR(int n, char* s);
 void generate_STORE_REF(int n, char* label);
 void generate_LOAD_REF(int n, char* label);
 void generate_TJMP_FW(int n);

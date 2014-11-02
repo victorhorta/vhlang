@@ -42,6 +42,7 @@ extern void init_globais();
  
 
 %token DUP
+%token NEG
 
 %token IF
 %right ELSE
@@ -182,14 +183,15 @@ S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF {
                                                                                generate_STRING_LF(label_creator($8._.MELSE.label_index));
                                                                              }
                                                                            }
-      | IDU MASSIGN EQUALS E SEMI_COLON {
-                                          int result_type = check_types(get_var_object($1._.IDU.index).my_type, EQUALS, $4._.E.my_type);
+      | IDU  EQUALS E SEMI_COLON {
+                                          int result_type = check_types(get_var_object($1._.IDU.index).my_type, EQUALS, $3._.E.my_type);
                                           if(result_type == -1) {
-                                            yyerror_type($4._.E.my_type, get_var_object($1._.IDU.index).my_type);
+                                            yyerror_type($3._.E.my_type, get_var_object($1._.IDU.index).my_type);
                                           } else {
-                                            printf("OK -- %s = %s\n",  get_type_name($4._.E.my_type), get_type_name(get_var_object($1._.IDU.index).my_type)); 
+                                            printf("OK -- %s = %s\n",  get_type_name(get_var_object($1._.IDU.index).my_type), get_type_name($3._.E.my_type)); 
                                           }
-                                          generate_STORE_REF($1._.IDU.index, $1._.IDU.my_label);
+                                          //generate_STORE_REF($1._.IDU.index, $1._.IDU.my_label);
+                                          generate_STORE_VAR($1._.IDU.index, $1._.IDU.my_label);
                                         }
       | B
       | E SEMI_COLON
@@ -369,42 +371,81 @@ E:      E AND R                 {
                                   $$._.E.is_var = $1._.R.is_var;
                                   $$._.E.index   = ($1._.R.is_var == 1 ? $1._.R.var.index : $1._.R.cnt.index);
                                   $$._.E.my_type = ($1._.R.is_var == 1 ? $1._.R.var.my_type : $1._.R.cnt.my_type);
-                                  //TODO: jogar E no topo da pilha
                                 }
 ;
 
 R:      PLUS_PLUS R     {
-                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
-                          int r_type = check_types(t1, PLUS_PLUS, t1);
-                          if(r_type == -1)
+                          if($2._.R.is_var == 0) {
+                            yyerror("Cannot apply ++ to const!");
+                          } else {
+                            v_type t1 = $2._.R.var.my_type;
+                            int r_type = check_types(t1, PLUS_PLUS, t1);
+                            
+                            if(r_type == -1)
                               yyerror("Type error!");
-                          else {
-                            if($2._.R.is_var == 1) {
-                                copy_var_object(&$$._.R.var, $2._.R.var);
-                                $$._.R.var.my_type = check_types(t1, NOT, t1);
-                              } else {
-                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
-                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
-                              }
+                            else {
+                              copy_var_object(&$$._.R.var, $2._.R.var);
+                              $$._.R.var.my_type = r_type;
+                            }
+                            //generate_LOAD_VAR($2._.R.var.index, $2._.R.var.my_label);
+                            generate_STRING_LF("INC\nDUP");
+                            generate_STORE_VAR($2._.R.var.index, $2._.R.var.my_label);
                           }
-                          //TODO: fprintf comando
                         }   
       | MINUS_MINUS R   {
-                          v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
-                          int r_type = check_types(t1, MINUS_MINUS, t1);
-                          if(r_type == -1)
+                          if($2._.R.is_var == 0) {
+                            yyerror("Cannot apply ++ to const!");
+                          } else {
+                            v_type t1 = $2._.R.var.my_type;
+                            int r_type = check_types(t1, PLUS_PLUS, t1);
+                            
+                            if(r_type == -1)
                               yyerror("Type error!");
-                          else {
-                            if($2._.R.is_var == 1) {
-                                copy_var_object(&$$._.R.var, $2._.R.var);
-                                $$._.R.var.my_type = check_types(t1, NOT, t1);
-                              } else {
-                                copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
-                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
-                              }
+                            else {
+                              copy_var_object(&$$._.R.var, $2._.R.var);
+                              $$._.R.var.my_type = r_type;
+                            }
+                            //generate_LOAD_VAR($2._.R.var.index, $2._.R.var.my_label);
+                            generate_STRING_LF("DEC\nDUP");
+                            generate_STORE_VAR($2._.R.var.index, $2._.R.var.my_label);
                           }
-                          //TODO: fprintf comando
+                        }
+      | R PLUS_PLUS     {
+                          if($1._.R.is_var == 0) {
+                            yyerror("Cannot apply ++ to const!");
+                          } else {
+                            v_type t1 = $1._.R.var.my_type;
+                            int r_type = check_types(t1, PLUS_PLUS, t1);
+                            
+                            if(r_type == -1)
+                              yyerror("Type error!");
+                            else {
+                              copy_var_object(&$$._.R.var, $1._.R.var);
+                              $$._.R.var.my_type = r_type;
+                            }
+                            //generate_LOAD_VAR($1._.R.var.index, $1._.R.var.my_label);
+                            generate_STRING_LF("DUP\nINC");
+                            generate_STORE_VAR($1._.R.var.index, $1._.R.var.my_label);
+                          }
                         }   
+      | R MINUS_MINUS   {
+                          if($1._.R.is_var == 0) {
+                            yyerror("Cannot apply ++ to const!");
+                          } else {
+                            v_type t1 = $1._.R.var.my_type;
+                            int r_type = check_types(t1, PLUS_PLUS, t1);
+                            
+                            if(r_type == -1)
+                              yyerror("Type error!");
+                            else {
+                              copy_var_object(&$$._.R.var, $1._.R.var);
+                              $$._.R.var.my_type = r_type;
+                            }
+                            //generate_LOAD_VAR($1._.R.var.index, $1._.R.var.my_label);
+                            generate_STRING_LF("DUP\nDEC");
+                            generate_STORE_VAR($1._.R.var.index, $1._.R.var.my_label);
+                          }
+                        }
       | MINUS R         {
                           v_type t1 = ($2._.R.is_var == 1 ? $2._.R.var.my_type : $2._.R.cnt.my_type);
                           int r_type = check_types(t1, MINUS, t1);
@@ -413,13 +454,13 @@ R:      PLUS_PLUS R     {
                           else {
                             if($2._.R.is_var == 1) {
                                 copy_var_object(&$$._.R.var, $2._.R.var);
-                                $$._.R.var.my_type = check_types(t1, NOT, t1);
+                                $$._.R.var.my_type = check_types(t1, MINUS, t1);
                               } else {
                                 copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
-                                $$._.R.cnt.my_type = check_types(t1, NOT, t1);
+                                $$._.R.cnt.my_type = check_types(t1, MINUS, t1);
                               }
+                              generate_OP(NEG);
                           }
-                          //TODO: fprintf comando
                         }   
       | NOT R           {
                           // checking type
@@ -435,8 +476,8 @@ R:      PLUS_PLUS R     {
                                 copy_cnt_object(&$$._.R.cnt, $2._.R.cnt);
                                 $$._.R.cnt.my_type = check_types(t1, NOT, t1);
                               }
+                              generate_OP(NOT);
                           }
-                          generate_OP(NOT);
                         }   
       | TRUE            {
                           $$._.R.is_var = 0;
@@ -515,7 +556,7 @@ IDU:    ID {
              if($$._.IDU.index < 0)
                yyerror("Identificador nao encontrado!");
 
-             generate_LOAD_REF($$._.IDU.index, $$._.IDU.my_label);
+             generate_LOAD_VAR($$._.IDU.index, $$._.IDU.my_label);
            }
 ;
 

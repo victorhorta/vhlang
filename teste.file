@@ -4,12 +4,5 @@ var y : int;
 var z : float;
 var a : boolean;
 {
-     y = 2 + 2;
-
-     a = y > y;
-     a = y >= y;
-     a = y < y;
-     a = y <= y;
-     a = y != y;
-     a = y == y;
+     z = y++;
 }
