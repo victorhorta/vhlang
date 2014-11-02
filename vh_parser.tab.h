@@ -46,45 +46,46 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     IF = 258,
-     ELSE = 259,
-     ENDIF = 260,
-     EQUALS = 261,
-     AND = 262,
-     OR = 263,
-     LESS_THAN = 264,
-     GREATER_THAN = 265,
-     LESS_OR_EQUAL = 266,
-     GREATER_OR_EQUAL = 267,
-     NOT_EQUAL = 268,
-     EQUAL_EQUAL = 269,
-     PLUS = 270,
-     MINUS = 271,
-     TIMES = 272,
-     DIVIDE = 273,
-     NOT = 274,
-     PLUS_PLUS = 275,
-     MINUS_MINUS = 276,
-     INTEGER = 277,
-     STRING = 278,
-     FLOAT = 279,
-     BOOLEAN = 280,
-     CHAR = 281,
-     VAR = 282,
-     COLON = 283,
-     SEMI_COLON = 284,
-     COMMA = 285,
-     LEFT_BRACES = 286,
-     RIGHT_BRACES = 287,
-     LEFT_PARENTHESIS = 288,
-     RIGHT_PARENTHESIS = 289,
-     ID = 290,
-     STRINGVAL = 291,
-     TRUE = 292,
-     FALSE = 293,
-     CHARACTER = 294,
-     NUMERALFLOAT = 295,
-     NUMERALINT = 296
+     DUP = 258,
+     IF = 259,
+     ELSE = 260,
+     ENDIF = 261,
+     EQUALS = 262,
+     AND = 263,
+     OR = 264,
+     LESS_THAN = 265,
+     GREATER_THAN = 266,
+     LESS_OR_EQUAL = 267,
+     GREATER_OR_EQUAL = 268,
+     NOT_EQUAL = 269,
+     EQUAL_EQUAL = 270,
+     PLUS = 271,
+     MINUS = 272,
+     TIMES = 273,
+     DIVIDE = 274,
+     NOT = 275,
+     PLUS_PLUS = 276,
+     MINUS_MINUS = 277,
+     INTEGER = 278,
+     STRING = 279,
+     FLOAT = 280,
+     BOOLEAN = 281,
+     CHAR = 282,
+     VAR = 283,
+     COLON = 284,
+     SEMI_COLON = 285,
+     COMMA = 286,
+     LEFT_BRACES = 287,
+     RIGHT_BRACES = 288,
+     LEFT_PARENTHESIS = 289,
+     RIGHT_PARENTHESIS = 290,
+     ID = 291,
+     STRINGVAL = 292,
+     TRUE = 293,
+     FALSE = 294,
+     CHARACTER = 295,
+     NUMERALFLOAT = 296,
+     NUMERALINT = 297
    };
 #endif
 
@@ -93,7 +94,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2053 of yacc.c  */
-#line 30 "vh_parser.y"
+#line 32 "vh_parser.y"
 
     int numeralint;
     float numeralfloat;
@@ -106,7 +107,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 110 "vh_parser.tab.h"
+#line 111 "vh_parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

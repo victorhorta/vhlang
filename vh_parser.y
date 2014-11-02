@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "vh_tipos.h"
 
@@ -8,6 +9,7 @@
 extern int yylex();
 extern int yyparse();
 extern FILE *yyin;
+extern FILE *output;
 extern int line_num;
 int MODO_DEBUG = 1;
 
@@ -39,6 +41,7 @@ extern void init_globais();
 }
  
 
+%token DUP
 
 %token IF
 %right ELSE
@@ -165,19 +168,26 @@ LI:     LI COMMA IDD {
                      }
 ;
 
-S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ENDIF
-      | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S ENDIF
-      | IDU EQUALS E SEMI_COLON {
-                                  int result_type = check_types(get_var_object($1._.IDU.index).my_type, EQUALS, $3._.E.my_type);
-                                  if(result_type == -1) {
-                                    yyerror_type($3._.E.my_type, get_var_object($1._.IDU.index).my_type);
-                                  } else {
-                                    printf("OK -- %s = %s\n",  get_type_name($3._.E.my_type), get_type_name(get_var_object($1._.IDU.index).my_type)); 
-                                  }
-
-                                }
+S:      IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF
+      | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF
+      | IDU MASSIGN EQUALS E SEMI_COLON {
+                                          int result_type = check_types(get_var_object($1._.IDU.index).my_type, EQUALS, $4._.E.my_type);
+                                          if(result_type == -1) {
+                                            yyerror_type($4._.E.my_type, get_var_object($1._.IDU.index).my_type);
+                                          } else {
+                                            printf("OK -- %s = %s\n",  get_type_name($4._.E.my_type), get_type_name(get_var_object($1._.IDU.index).my_type)); 
+                                          }
+                                          generate_STORE_REF($1._.IDU.index, $1._.IDU.my_label);
+                                        }
       | B
       | E SEMI_COLON
+;
+
+MASSIGN: {generate_OP(DUP);}
+
+MTHEN: {printf("THENNNNNNNN\n");}
+;
+MELSE: {printf("ELSEEEEEEEE\n");}
 ;
 
 E:      E AND R
@@ -192,9 +202,8 @@ E:      E AND R
                                   $$._.E.is_var = 0;
                                   $$._.E.index   = ($1._.R.is_var == 1 ? $1._.R.var.index : $1._.R.cnt.index);
                                   $$._.E.my_type = ($1._.R.is_var == 1 ? $1._.R.var.my_type : $1._.R.cnt.my_type);
-                                  //TODO: jogar E   no topo da pilha
-                                  //TODO: jogar R   no topo da pilha
-                                  //TODO: jogar add no topo da pilha
+                                  
+                                  generate_OP(PLUS);
                                 }
       | E MINUS R
       | E TIMES R
@@ -300,9 +309,16 @@ R:      PLUS_PLUS R     {
                         }
       | NUM             {
                           $$._.R.is_var = 0;
-                          copy_cnt_object(&$$._.R.cnt, $$._.NUM.my_const);
+                          copy_cnt_object(&$$._.R.cnt, $1._.NUM.my_const);
                           $$._.R.cnt.index = const_append($$._.R.cnt);
                           debug_cnt($$._.R.cnt);
+                          char* buffer = (char*)malloc(30 * sizeof(char) +1);
+                          if($$._.R.cnt.my_type == V_FLOAT)
+                            snprintf(buffer,50,"%f",$$._.R.cnt.value_f);
+                          else 
+                            snprintf(buffer,50,"%d",$$._.R.cnt.value_i);
+                          
+                          generate_LOAD_CONST($$._.R.cnt.index, buffer);
                         }
       | IDU             {
                           $$._.R.is_var = 1;
@@ -336,6 +352,8 @@ IDU:    ID {
              $$._.IDU.index = var_scan($$._.IDU.my_label);
              if($$._.IDU.index < 0)
                yyerror("Identificador nao encontrado!");
+
+             generate_LOAD_REF($$._.IDU.index, $$._.IDU.my_label);
            }
 ;
 

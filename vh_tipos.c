@@ -5,6 +5,7 @@
 #include "vh_parser.tab.h"
 
 extern int yyerror(const char *msg);
+FILE* output;
 
 // Definindo os escalares
 object int_ = { -1, NULL, SCALAR_TYPE_};
@@ -53,7 +54,7 @@ int last_value = -1;
 char** variables;
 var_object*  ALL_VARIABLES;
 const_object* ALL_CONSTANTS;
-
+int ALL_LABELS = 0;
 int ALL_VARIABLES_SIZE = -1;
 int ALL_CONSTANTS_SIZE = -1;
 
@@ -61,11 +62,12 @@ void init_globais() {
 	 variables = (char**)malloc(sizeof(char*) * MAX_VARS + 1); 
 	 ALL_VARIABLES = (var_object*)malloc(sizeof(var_object) * MAX_VARS + 1);
 	 ALL_CONSTANTS = (const_object*)malloc(sizeof(const_object) * MAX_CONSTS + 1);
+	 output = fopen("teste.output", "w");
 }
 
 
 int const_append(const_object cnt) {
-	 printf("const_append %d\n", cnt.my_type);
+	 printf("const_append %s\n", get_type_name(cnt.my_type));
 
 	 
 	 if(ALL_CONSTANTS_SIZE >= MAX_VARS) {
@@ -255,7 +257,7 @@ int check_types(v_type t1, int operador, v_type t2) {
 void debug_var(var_object v) {
 	printf("--DEBUGVAR-----------\n");
 	
-	printf("> my_type:  %d\n", v.my_type);
+	printf("> my_type:  %s\n", get_type_name(v.my_type));
 	printf("> my_label: %s\n", v.my_label);
 	printf("> index:    %d\n", v.index);
     printf("> value_i:  %d\n", v.value_i);
@@ -272,7 +274,7 @@ void debug_var(var_object v) {
 void debug_cnt(const_object c) {
 	printf("--DEBUGCNT-----------\n");
 	
-	printf("> my_type:  %d\n", c.my_type);
+	printf("> my_type:  %s\n", get_type_name(c.my_type));
 	printf("> index:    %d\n", c.index);
     printf("> value_i:  %d\n", c.value_i);
 	printf("> value_f:  %f\n", c.value_f);
@@ -336,6 +338,9 @@ void copy_cnt_object(const_object* dest, const_object src) {
 		(*dest).value_s = (char*)malloc(strlen(src.value_s) + 1);
 		strcpy((*dest).value_s, src.value_s);
 	}
+
+	printf("ORIGEM:  %s\n", get_type_name(src.my_type));
+	printf("DESTINO: %s\n", get_type_name((*dest).my_type));
 	return;
 }
 
@@ -349,3 +354,60 @@ char* get_type_name(v_type t) {
 		default:        return "????"; break;
 	}
 };
+
+
+char* give_me_a_label() {
+	//snprintf(label, 4, "%04d", ALL_LABELS);
+	int pos1, pos2, pos3;
+	char* label = (char*)malloc(4*sizeof(char)+1);
+
+	pos1 = (ALL_LABELS - ALL_LABELS%100)/100;
+	pos3 = (ALL_LABELS%10);
+	pos2 = (ALL_LABELS - 100*pos1 - pos3)/10;
+
+	label[0] = 'L';
+	label[1] = (char)(((int)'0')+pos1);
+	label[2] = (char)(((int)'0')+pos2);
+	label[3] = (char)(((int)'0')+pos3);
+
+	ALL_LABELS++;
+	return label;
+}
+
+void generate_OP(int op) {
+	output = fopen("teste.output", "a");
+	char command[100];
+	switch(op) {
+		case PLUS_PLUS:   strncpy(command, "DUP\nDUP\nDE_REF 1\nINC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
+		case MINUS_MINUS: strncpy(command, "DUP\nDUP\nDE_REF 1\nDEC\nSTORE_REF 1\nDE_REF 1\n", 100); break;
+		case MINUS:       strncpy(command, "NEG", 100); break;
+		case NOT:         strncpy(command, "NOT", 100); break;
+		case PLUS:        strncpy(command, "ADD", 100); break;
+		case DUP:         strncpy(command, "DUP", 100); break;
+	}
+	
+	fprintf(output, "%s\n", command);
+	fclose(output);
+	return;
+}
+
+void generate_LOAD_CONST(int n, char* s) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "LOAD_CONST\t%d\t(%s)\n", n, s);
+	fclose(output);
+	return;	
+}
+
+void generate_LOAD_REF(int n, char* label) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "LOAD_REF\t%d\t(%s)\n", n, label);
+	fclose(output);
+	return;		
+}
+
+void generate_STORE_REF(int n, char* label) {
+	output = fopen("teste.output", "a");
+	fprintf(output, "STORE_REF\t%d\t(%s)\n", n, label);
+	fclose(output);
+	return;			
+}

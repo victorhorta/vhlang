@@ -6,6 +6,7 @@
 #define MAX_CONSTS 30
 #define MAX_VARS 30
 #define MAX_VAR_LENGTH 20
+#define MAX_LABELS 999
 
 #define BOOLEANTRUE 1
 #define BOOLEANFALSE 0
@@ -204,3 +205,9 @@ char* get_type_name(v_type t);
 
 void debug_var(var_object v);
 void debug_cnt(const_object v);
+char* give_me_a_label();
+
+void generate_OP(int op);
+void generate_LOAD_CONST(int n, char* s);
+void generate_STORE_REF(int n, char* label);
+void generate_LOAD_REF(int n, char* label);
