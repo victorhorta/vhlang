@@ -670,15 +670,26 @@ IDU:    ID {
 
 %%
 
-int main() {
+int main(int argc, char **argv) {
   // Inicializando variaveis globais!!!
   init_globais();
+  const int MAX_PATH_LENGTH = 30;
 
-  FILE *myfile = fopen("teste.file", "r");
+  char* default_file_name = (char*)malloc((MAX_PATH_LENGTH + 1) * sizeof(char));
+  strcpy(default_file_name, "teste.file");
+
+  char* file_name = (char*)malloc((MAX_PATH_LENGTH + 1) * sizeof(char));
+
+  (argc == 1) ? strcpy(file_name, default_file_name) : strcpy(file_name, argv[1]);;
+
+
+  FILE *myfile = fopen(file_name, "r");
 
   if(!myfile) {
     printf("Erro abrindo arquivo\n");
     return -1;
+  } else {
+    printf("Abrindo arquivo: %s\n", file_name);
   }
 
   if(MODO_DEBUG)
@@ -690,4 +701,5 @@ int main() {
   } while(!feof(yyin));
   
   printf("---------------\nFIM DO PROGRAMA\n");
+  printf("Arquivo lido com exito: %s\n", file_name);
 }

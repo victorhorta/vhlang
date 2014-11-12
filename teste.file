@@ -1,10 +1,16 @@
 var n, i, f: int;
+var x: float;
 {
 	i = 2;
 	f = 1;
+	x = 3.14;
 
     while(i <= n) {
+        if(i==2) {
+            i = 3;
+            return ++i;
+        } endif
 		f = f * i++;
 	}
-	return f;
-}
+	return x;
+}	

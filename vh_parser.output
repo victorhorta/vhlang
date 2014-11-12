@@ -1,1280 +1,1529 @@
+Nonterminals useless in grammar
+
+   MASSIGN
+
+
+Terminals unused in grammar
+
+   DUP
+   POP
+   NEG
+
+
+Rules useless in grammar
+
+   57 MASSIGN: /* empty */
+
+
 Grammar
 
     0 $accept: P $end
 
-    1 P: LDE
+    1 P: BF LDE
 
-    2 LDE: LDE DE
-    3    | DE
+    2 BF: /* empty */
 
-    4 DE: DV
-    5   | B
+    3 LDE: LDE DE
+    4    | DE
 
-    6 DV: VAR LI COLON T SEMI_COLON
+    5 DE: DV
+    6   | B
 
-    7 B: LEFT_BRACES LS RIGHT_BRACES
+    7 DV: VAR LI COLON T SEMI_COLON
 
-    8 T: INTEGER
-    9  | FLOAT
-   10  | CHAR
-   11  | BOOLEAN
-   12  | STRING
+    8 B: LEFT_BRACES LS RIGHT_BRACES
 
-   13 LS: LS S
-   14   | S
+    9 T: INTEGER
+   10  | FLOAT
+   11  | CHAR
+   12  | BOOLEAN
+   13  | STRING
 
-   15 LI: LI COMMA IDD
-   16   | IDD
+   14 LS: LS S
+   15   | S
 
-   17 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ENDIF
-   18  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S ENDIF
-   19  | IDU EQUALS E SEMI_COLON
-   20  | B
-   21  | E SEMI_COLON
+   16 LI: LI COMMA IDD
+   17   | IDD
 
-   22 E: E AND R
-   23  | E OR R
-   24  | E LESS_THAN R
-   25  | E GREATER_THAN R
-   26  | E LESS_OR_EQUAL R
-   27  | E GREATER_OR_EQUAL R
-   28  | E EQUAL_EQUAL R
-   29  | E NOT_EQUAL R
-   30  | E PLUS R
-   31  | E MINUS R
-   32  | E TIMES R
-   33  | E DIVIDE R
-   34  | R
+   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF
+   19  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF
+   20  | IDU EQUALS E SEMI_COLON
+   21  | WHILE MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S
+   22  | B
+   23  | E SEMI_COLON
+   24  | RETURN E SEMI_COLON
 
-   35 R: PLUS_PLUS R
-   36  | R PLUS_PLUS
-   37  | MINUS_MINUS R
-   38  | R MINUS_MINUS
-   39  | MINUS R
-   40  | NOT R
-   41  | TRUE
-   42  | FALSE
-   43  | CHARACTER
-   44  | STRINGVAL
-   45  | NUM
-   46  | IDU
+   25 MTHEN: /* empty */
 
-   47 NUM: NUMERALFLOAT
-   48    | NUMERALINT
+   26 MELSE: /* empty */
 
-   49 IDD: ID
+   27 MWHILE: /* empty */
 
-   50 IDU: ID
+   28 E: E AND R
+   29  | E OR R
+   30  | E LESS_THAN R
+   31  | E GREATER_THAN R
+   32  | E LESS_OR_EQUAL R
+   33  | E GREATER_OR_EQUAL R
+   34  | E EQUAL_EQUAL R
+   35  | E NOT_EQUAL R
+   36  | E PLUS R
+   37  | E MINUS R
+   38  | E TIMES R
+   39  | E DIVIDE R
+   40  | R
+
+   41 R: PLUS_PLUS R
+   42  | MINUS_MINUS R
+   43  | R PLUS_PLUS
+   44  | R MINUS_MINUS
+   45  | MINUS R
+   46  | NOT R
+   47  | TRUE
+   48  | FALSE
+   49  | CHARACTER
+   50  | STRINGVAL
+   51  | NUM
+   52  | IDU
+
+   53 NUM: NUMERALFLOAT
+   54    | NUMERALINT
+
+   55 IDD: ID
+
+   56 IDU: ID
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-IF (258) 17 18
-ELSE (259) 18
-ENDIF (260) 17 18
-EQUALS (261) 19
-AND (262) 22
-OR (263) 23
-LESS_THAN (264) 24
-GREATER_THAN (265) 25
-LESS_OR_EQUAL (266) 26
-GREATER_OR_EQUAL (267) 27
-NOT_EQUAL (268) 29
-EQUAL_EQUAL (269) 28
-PLUS (270) 30
-MINUS (271) 31 39
-TIMES (272) 32
-DIVIDE (273) 33
-NOT (274) 40
-PLUS_PLUS (275) 35 36
-MINUS_MINUS (276) 37 38
-BOOLEAN (277) 11
-CHAR (278) 10
-INTEGER (279) 8
-STRING (280) 12
-FLOAT (281) 9
-VAR (282) 6
-COLON (283) 6
-SEMI_COLON (284) 6 19 21
-COMMA (285) 15
-LEFT_BRACES (286) 7
-RIGHT_BRACES (287) 7
-LEFT_PARENTHESIS (288) 17 18
-RIGHT_PARENTHESIS (289) 17 18
-ID (290) 49 50
-STRINGVAL (291) 44
-TRUE (292) 41
-FALSE (293) 42
-CHARACTER (294) 43
-NUMERALFLOAT (295) 47
-NUMERALINT (296) 48
+DUP (258)
+POP (259)
+NEG (260)
+IF (261) 18 19
+ELSE (262) 19
+ENDIF (263) 18 19
+WHILE (264) 21
+RETURN (265) 24
+EQUALS (266) 20
+AND (267) 28
+OR (268) 29
+LESS_THAN (269) 30
+GREATER_THAN (270) 31
+LESS_OR_EQUAL (271) 32
+GREATER_OR_EQUAL (272) 33
+NOT_EQUAL (273) 35
+EQUAL_EQUAL (274) 34
+PLUS (275) 36
+MINUS (276) 37 45
+TIMES (277) 38
+DIVIDE (278) 39
+NOT (279) 46
+PLUS_PLUS (280) 41 43
+MINUS_MINUS (281) 42 44
+INTEGER (282) 9
+STRING (283) 13
+FLOAT (284) 10
+BOOLEAN (285) 12
+CHAR (286) 11
+VAR (287) 7
+COLON (288) 7
+SEMI_COLON (289) 7 20 23 24
+COMMA (290) 16
+LEFT_BRACES (291) 8
+RIGHT_BRACES (292) 8
+LEFT_PARENTHESIS (293) 18 19 21
+RIGHT_PARENTHESIS (294) 18 19 21
+ID (295) 55 56
+STRINGVAL (296) 50
+TRUE (297) 47
+FALSE (298) 48
+CHARACTER (299) 49
+NUMERALFLOAT (300) 53
+NUMERALINT (301) 54
 
 
 Nonterminals, with rules where they appear
 
-$accept (42)
+$accept (47)
     on left: 0
-P (43)
+P (48)
     on left: 1, on right: 0
-LDE (44)
-    on left: 2 3, on right: 1 2
-DE (45)
-    on left: 4 5, on right: 2 3
-DV (46)
-    on left: 6, on right: 4
-B (47)
-    on left: 7, on right: 5 20
-T (48)
-    on left: 8 9 10 11 12, on right: 6
-LS (49)
-    on left: 13 14, on right: 7 13
-LI (50)
-    on left: 15 16, on right: 6 15
-S (51)
-    on left: 17 18 19 20 21, on right: 13 14 17 18
-E (52)
-    on left: 22 23 24 25 26 27 28 29 30 31 32 33 34, on right: 17 18
-    19 21 22 23 24 25 26 27 28 29 30 31 32 33
-R (53)
-    on left: 35 36 37 38 39 40 41 42 43 44 45 46, on right: 22 23 24
-    25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
-NUM (54)
-    on left: 47 48, on right: 45
-IDD (55)
-    on left: 49, on right: 15 16
-IDU (56)
-    on left: 50, on right: 19 46
+BF (49)
+    on left: 2, on right: 1
+LDE (50)
+    on left: 3 4, on right: 1 3
+DE (51)
+    on left: 5 6, on right: 3 4
+DV (52)
+    on left: 7, on right: 5
+B (53)
+    on left: 8, on right: 6 22
+T (54)
+    on left: 9 10 11 12 13, on right: 7
+LS (55)
+    on left: 14 15, on right: 8 14
+LI (56)
+    on left: 16 17, on right: 7 16
+S (57)
+    on left: 18 19 20 21 22 23 24, on right: 14 15 18 19 21
+MTHEN (58)
+    on left: 25, on right: 18 19 21
+MELSE (59)
+    on left: 26, on right: 19
+MWHILE (60)
+    on left: 27, on right: 21
+E (61)
+    on left: 28 29 30 31 32 33 34 35 36 37 38 39 40, on right: 18 19
+    20 21 23 24 28 29 30 31 32 33 34 35 36 37 38 39
+R (62)
+    on left: 41 42 43 44 45 46 47 48 49 50 51 52, on right: 28 29 30
+    31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46
+NUM (63)
+    on left: 53 54, on right: 51
+IDD (64)
+    on left: 55, on right: 16 17
+IDU (65)
+    on left: 56, on right: 20 52
 
 
 State 0
 
     0 $accept: . P $end
 
-    VAR          shift, and go to state 1
-    LEFT_BRACES  shift, and go to state 2
+    $default  reduce using rule 2 (BF)
 
-    P    go to state 3
-    LDE  go to state 4
-    DE   go to state 5
-    DV   go to state 6
-    B    go to state 7
+    P   go to state 1
+    BF  go to state 2
 
 
 State 1
 
-    6 DV: VAR . LI COLON T SEMI_COLON
+    0 $accept: P . $end
 
-    ID  shift, and go to state 8
-
-    LI   go to state 9
-    IDD  go to state 10
+    $end  shift, and go to state 3
 
 
 State 2
 
-    7 B: LEFT_BRACES . LS RIGHT_BRACES
+    1 P: BF . LDE
 
-    IF            shift, and go to state 11
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    LEFT_BRACES   shift, and go to state 2
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    VAR          shift, and go to state 4
+    LEFT_BRACES  shift, and go to state 5
 
-    B    go to state 23
-    LS   go to state 24
-    S    go to state 25
-    E    go to state 26
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 29
+    LDE  go to state 6
+    DE   go to state 7
+    DV   go to state 8
+    B    go to state 9
 
 
 State 3
-
-    0 $accept: P . $end
-
-    $end  shift, and go to state 30
-
-
-State 4
-
-    1 P: LDE .
-    2 LDE: LDE . DE
-
-    VAR          shift, and go to state 1
-    LEFT_BRACES  shift, and go to state 2
-
-    $default  reduce using rule 1 (P)
-
-    DE  go to state 31
-    DV  go to state 6
-    B   go to state 7
-
-
-State 5
-
-    3 LDE: DE .
-
-    $default  reduce using rule 3 (LDE)
-
-
-State 6
-
-    4 DE: DV .
-
-    $default  reduce using rule 4 (DE)
-
-
-State 7
-
-    5 DE: B .
-
-    $default  reduce using rule 5 (DE)
-
-
-State 8
-
-   49 IDD: ID .
-
-    $default  reduce using rule 49 (IDD)
-
-
-State 9
-
-    6 DV: VAR LI . COLON T SEMI_COLON
-   15 LI: LI . COMMA IDD
-
-    COLON  shift, and go to state 32
-    COMMA  shift, and go to state 33
-
-
-State 10
-
-   16 LI: IDD .
-
-    $default  reduce using rule 16 (LI)
-
-
-State 11
-
-   17 S: IF . LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ENDIF
-   18  | IF . LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S ENDIF
-
-    LEFT_PARENTHESIS  shift, and go to state 34
-
-
-State 12
-
-   39 R: MINUS . R
-
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 35
-    NUM  go to state 28
-    IDU  go to state 36
-
-
-State 13
-
-   40 R: NOT . R
-
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 37
-    NUM  go to state 28
-    IDU  go to state 36
-
-
-State 14
-
-   35 R: PLUS_PLUS . R
-
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 38
-    NUM  go to state 28
-    IDU  go to state 36
-
-
-State 15
-
-   37 R: MINUS_MINUS . R
-
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 39
-    NUM  go to state 28
-    IDU  go to state 36
-
-
-State 16
-
-   50 IDU: ID .
-
-    $default  reduce using rule 50 (IDU)
-
-
-State 17
-
-   44 R: STRINGVAL .
-
-    $default  reduce using rule 44 (R)
-
-
-State 18
-
-   41 R: TRUE .
-
-    $default  reduce using rule 41 (R)
-
-
-State 19
-
-   42 R: FALSE .
-
-    $default  reduce using rule 42 (R)
-
-
-State 20
-
-   43 R: CHARACTER .
-
-    $default  reduce using rule 43 (R)
-
-
-State 21
-
-   47 NUM: NUMERALFLOAT .
-
-    $default  reduce using rule 47 (NUM)
-
-
-State 22
-
-   48 NUM: NUMERALINT .
-
-    $default  reduce using rule 48 (NUM)
-
-
-State 23
-
-   20 S: B .
-
-    $default  reduce using rule 20 (S)
-
-
-State 24
-
-    7 B: LEFT_BRACES LS . RIGHT_BRACES
-   13 LS: LS . S
-
-    IF            shift, and go to state 11
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    LEFT_BRACES   shift, and go to state 2
-    RIGHT_BRACES  shift, and go to state 40
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    B    go to state 23
-    S    go to state 41
-    E    go to state 26
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 29
-
-
-State 25
-
-   14 LS: S .
-
-    $default  reduce using rule 14 (LS)
-
-
-State 26
-
-   21 S: E . SEMI_COLON
-   22 E: E . AND R
-   23  | E . OR R
-   24  | E . LESS_THAN R
-   25  | E . GREATER_THAN R
-   26  | E . LESS_OR_EQUAL R
-   27  | E . GREATER_OR_EQUAL R
-   28  | E . EQUAL_EQUAL R
-   29  | E . NOT_EQUAL R
-   30  | E . PLUS R
-   31  | E . MINUS R
-   32  | E . TIMES R
-   33  | E . DIVIDE R
-
-    AND               shift, and go to state 42
-    OR                shift, and go to state 43
-    LESS_THAN         shift, and go to state 44
-    GREATER_THAN      shift, and go to state 45
-    LESS_OR_EQUAL     shift, and go to state 46
-    GREATER_OR_EQUAL  shift, and go to state 47
-    NOT_EQUAL         shift, and go to state 48
-    EQUAL_EQUAL       shift, and go to state 49
-    PLUS              shift, and go to state 50
-    MINUS             shift, and go to state 51
-    TIMES             shift, and go to state 52
-    DIVIDE            shift, and go to state 53
-    SEMI_COLON        shift, and go to state 54
-
-
-State 27
-
-   34 E: R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
-
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 34 (E)
-
-
-State 28
-
-   45 R: NUM .
-
-    $default  reduce using rule 45 (R)
-
-
-State 29
-
-   19 S: IDU . EQUALS E SEMI_COLON
-   46 R: IDU .
-
-    EQUALS  shift, and go to state 57
-
-    $default  reduce using rule 46 (R)
-
-
-State 30
 
     0 $accept: P $end .
 
     $default  accept
 
 
+State 4
+
+    7 DV: VAR . LI COLON T SEMI_COLON
+
+    ID  shift, and go to state 10
+
+    LI   go to state 11
+    IDD  go to state 12
+
+
+State 5
+
+    8 B: LEFT_BRACES . LS RIGHT_BRACES
+
+    IF            shift, and go to state 13
+    WHILE         shift, and go to state 14
+    RETURN        shift, and go to state 15
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    LEFT_BRACES   shift, and go to state 5
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    B    go to state 27
+    LS   go to state 28
+    S    go to state 29
+    E    go to state 30
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 33
+
+
+State 6
+
+    1 P: BF LDE .
+    3 LDE: LDE . DE
+
+    VAR          shift, and go to state 4
+    LEFT_BRACES  shift, and go to state 5
+
+    $default  reduce using rule 1 (P)
+
+    DE  go to state 34
+    DV  go to state 8
+    B   go to state 9
+
+
+State 7
+
+    4 LDE: DE .
+
+    $default  reduce using rule 4 (LDE)
+
+
+State 8
+
+    5 DE: DV .
+
+    $default  reduce using rule 5 (DE)
+
+
+State 9
+
+    6 DE: B .
+
+    $default  reduce using rule 6 (DE)
+
+
+State 10
+
+   55 IDD: ID .
+
+    $default  reduce using rule 55 (IDD)
+
+
+State 11
+
+    7 DV: VAR LI . COLON T SEMI_COLON
+   16 LI: LI . COMMA IDD
+
+    COLON  shift, and go to state 35
+    COMMA  shift, and go to state 36
+
+
+State 12
+
+   17 LI: IDD .
+
+    $default  reduce using rule 17 (LI)
+
+
+State 13
+
+   18 S: IF . LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF
+   19  | IF . LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF
+
+    LEFT_PARENTHESIS  shift, and go to state 37
+
+
+State 14
+
+   21 S: WHILE . MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S
+
+    $default  reduce using rule 27 (MWHILE)
+
+    MWHILE  go to state 38
+
+
+State 15
+
+   24 S: RETURN . E SEMI_COLON
+
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    E    go to state 39
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 40
+
+
+State 16
+
+   45 R: MINUS . R
+
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 41
+    NUM  go to state 32
+    IDU  go to state 40
+
+
+State 17
+
+   46 R: NOT . R
+
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 42
+    NUM  go to state 32
+    IDU  go to state 40
+
+
+State 18
+
+   41 R: PLUS_PLUS . R
+
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 43
+    NUM  go to state 32
+    IDU  go to state 40
+
+
+State 19
+
+   42 R: MINUS_MINUS . R
+
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 44
+    NUM  go to state 32
+    IDU  go to state 40
+
+
+State 20
+
+   56 IDU: ID .
+
+    $default  reduce using rule 56 (IDU)
+
+
+State 21
+
+   50 R: STRINGVAL .
+
+    $default  reduce using rule 50 (R)
+
+
+State 22
+
+   47 R: TRUE .
+
+    $default  reduce using rule 47 (R)
+
+
+State 23
+
+   48 R: FALSE .
+
+    $default  reduce using rule 48 (R)
+
+
+State 24
+
+   49 R: CHARACTER .
+
+    $default  reduce using rule 49 (R)
+
+
+State 25
+
+   53 NUM: NUMERALFLOAT .
+
+    $default  reduce using rule 53 (NUM)
+
+
+State 26
+
+   54 NUM: NUMERALINT .
+
+    $default  reduce using rule 54 (NUM)
+
+
+State 27
+
+   22 S: B .
+
+    $default  reduce using rule 22 (S)
+
+
+State 28
+
+    8 B: LEFT_BRACES LS . RIGHT_BRACES
+   14 LS: LS . S
+
+    IF            shift, and go to state 13
+    WHILE         shift, and go to state 14
+    RETURN        shift, and go to state 15
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    LEFT_BRACES   shift, and go to state 5
+    RIGHT_BRACES  shift, and go to state 45
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    B    go to state 27
+    S    go to state 46
+    E    go to state 30
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 33
+
+
+State 29
+
+   15 LS: S .
+
+    $default  reduce using rule 15 (LS)
+
+
+State 30
+
+   23 S: E . SEMI_COLON
+   28 E: E . AND R
+   29  | E . OR R
+   30  | E . LESS_THAN R
+   31  | E . GREATER_THAN R
+   32  | E . LESS_OR_EQUAL R
+   33  | E . GREATER_OR_EQUAL R
+   34  | E . EQUAL_EQUAL R
+   35  | E . NOT_EQUAL R
+   36  | E . PLUS R
+   37  | E . MINUS R
+   38  | E . TIMES R
+   39  | E . DIVIDE R
+
+    AND               shift, and go to state 47
+    OR                shift, and go to state 48
+    LESS_THAN         shift, and go to state 49
+    GREATER_THAN      shift, and go to state 50
+    LESS_OR_EQUAL     shift, and go to state 51
+    GREATER_OR_EQUAL  shift, and go to state 52
+    NOT_EQUAL         shift, and go to state 53
+    EQUAL_EQUAL       shift, and go to state 54
+    PLUS              shift, and go to state 55
+    MINUS             shift, and go to state 56
+    TIMES             shift, and go to state 57
+    DIVIDE            shift, and go to state 58
+    SEMI_COLON        shift, and go to state 59
+
+
 State 31
 
-    2 LDE: LDE DE .
+   40 E: R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    $default  reduce using rule 2 (LDE)
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 40 (E)
 
 
 State 32
 
-    6 DV: VAR LI COLON . T SEMI_COLON
+   51 R: NUM .
 
-    BOOLEAN  shift, and go to state 58
-    CHAR     shift, and go to state 59
-    INTEGER  shift, and go to state 60
-    STRING   shift, and go to state 61
-    FLOAT    shift, and go to state 62
-
-    T  go to state 63
+    $default  reduce using rule 51 (R)
 
 
 State 33
 
-   15 LI: LI COMMA . IDD
+   20 S: IDU . EQUALS E SEMI_COLON
+   52 R: IDU .
 
-    ID  shift, and go to state 8
+    EQUALS  shift, and go to state 62
 
-    IDD  go to state 64
+    $default  reduce using rule 52 (R)
 
 
 State 34
 
-   17 S: IF LEFT_PARENTHESIS . E RIGHT_PARENTHESIS S ENDIF
-   18  | IF LEFT_PARENTHESIS . E RIGHT_PARENTHESIS S ELSE S ENDIF
+    3 LDE: LDE DE .
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    E    go to state 65
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 3 (LDE)
 
 
 State 35
 
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
-   39  | MINUS R .
+    7 DV: VAR LI COLON . T SEMI_COLON
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    INTEGER  shift, and go to state 63
+    STRING   shift, and go to state 64
+    FLOAT    shift, and go to state 65
+    BOOLEAN  shift, and go to state 66
+    CHAR     shift, and go to state 67
 
-    $default  reduce using rule 39 (R)
+    T  go to state 68
 
 
 State 36
 
-   46 R: IDU .
+   16 LI: LI COMMA . IDD
 
-    $default  reduce using rule 46 (R)
+    ID  shift, and go to state 10
+
+    IDD  go to state 69
 
 
 State 37
 
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
-   40  | NOT R .
+   18 S: IF LEFT_PARENTHESIS . E RIGHT_PARENTHESIS MTHEN S ENDIF
+   19  | IF LEFT_PARENTHESIS . E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    $default  reduce using rule 40 (R)
+    E    go to state 70
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 38
 
-   35 R: PLUS_PLUS R .
-   36  | R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   21 S: WHILE MWHILE . LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S
 
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 35 (R)
+    LEFT_PARENTHESIS  shift, and go to state 71
 
 
 State 39
 
-   36 R: R . PLUS_PLUS
-   37  | MINUS_MINUS R .
-   38  | R . MINUS_MINUS
+   24 S: RETURN E . SEMI_COLON
+   28 E: E . AND R
+   29  | E . OR R
+   30  | E . LESS_THAN R
+   31  | E . GREATER_THAN R
+   32  | E . LESS_OR_EQUAL R
+   33  | E . GREATER_OR_EQUAL R
+   34  | E . EQUAL_EQUAL R
+   35  | E . NOT_EQUAL R
+   36  | E . PLUS R
+   37  | E . MINUS R
+   38  | E . TIMES R
+   39  | E . DIVIDE R
 
-    $default  reduce using rule 37 (R)
+    AND               shift, and go to state 47
+    OR                shift, and go to state 48
+    LESS_THAN         shift, and go to state 49
+    GREATER_THAN      shift, and go to state 50
+    LESS_OR_EQUAL     shift, and go to state 51
+    GREATER_OR_EQUAL  shift, and go to state 52
+    NOT_EQUAL         shift, and go to state 53
+    EQUAL_EQUAL       shift, and go to state 54
+    PLUS              shift, and go to state 55
+    MINUS             shift, and go to state 56
+    TIMES             shift, and go to state 57
+    DIVIDE            shift, and go to state 58
+    SEMI_COLON        shift, and go to state 72
 
 
 State 40
 
-    7 B: LEFT_BRACES LS RIGHT_BRACES .
+   52 R: IDU .
 
-    $default  reduce using rule 7 (B)
+    $default  reduce using rule 52 (R)
 
 
 State 41
 
-   13 LS: LS S .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
+   45  | MINUS R .
 
-    $default  reduce using rule 13 (LS)
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 45 (R)
 
 
 State 42
 
-   22 E: E AND . R
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
+   46  | NOT R .
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    R    go to state 66
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 46 (R)
 
 
 State 43
 
-   23 E: E OR . R
+   41 R: PLUS_PLUS R .
+   43  | R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS_MINUS  shift, and go to state 61
 
-    R    go to state 67
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 41 (R)
 
 
 State 44
 
-   24 E: E LESS_THAN . R
+   42 R: MINUS_MINUS R .
+   43  | R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 68
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 42 (R)
 
 
 State 45
 
-   25 E: E GREATER_THAN . R
+    8 B: LEFT_BRACES LS RIGHT_BRACES .
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 69
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 8 (B)
 
 
 State 46
 
-   26 E: E LESS_OR_EQUAL . R
+   14 LS: LS S .
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
-
-    R    go to state 70
-    NUM  go to state 28
-    IDU  go to state 36
+    $default  reduce using rule 14 (LS)
 
 
 State 47
 
-   27 E: E GREATER_OR_EQUAL . R
+   28 E: E AND . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 71
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 73
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 48
 
-   29 E: E NOT_EQUAL . R
+   29 E: E OR . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 72
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 74
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 49
 
-   28 E: E EQUAL_EQUAL . R
+   30 E: E LESS_THAN . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 73
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 75
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 50
 
-   30 E: E PLUS . R
+   31 E: E GREATER_THAN . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 74
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 76
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 51
 
-   31 E: E MINUS . R
+   32 E: E LESS_OR_EQUAL . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 75
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 77
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 52
 
-   32 E: E TIMES . R
+   33 E: E GREATER_OR_EQUAL . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 76
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 78
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 53
 
-   33 E: E DIVIDE . R
+   35 E: E NOT_EQUAL . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    R    go to state 77
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 79
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 54
 
-   21 S: E SEMI_COLON .
+   34 E: E EQUAL_EQUAL . R
 
-    $default  reduce using rule 21 (S)
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 80
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 55
 
-   36 R: R PLUS_PLUS .
+   36 E: E PLUS . R
 
-    $default  reduce using rule 36 (R)
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 81
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 56
 
-   38 R: R MINUS_MINUS .
+   37 E: E MINUS . R
 
-    $default  reduce using rule 38 (R)
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 82
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 57
 
-   19 S: IDU EQUALS . E SEMI_COLON
+   38 E: E TIMES . R
 
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    E    go to state 78
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 36
+    R    go to state 83
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 58
 
-   11 T: BOOLEAN .
+   39 E: E DIVIDE . R
 
-    $default  reduce using rule 11 (T)
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    R    go to state 84
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 59
 
-   10 T: CHAR .
+   23 S: E SEMI_COLON .
 
-    $default  reduce using rule 10 (T)
+    $default  reduce using rule 23 (S)
 
 
 State 60
 
-    8 T: INTEGER .
+   43 R: R PLUS_PLUS .
 
-    $default  reduce using rule 8 (T)
+    $default  reduce using rule 43 (R)
 
 
 State 61
 
-   12 T: STRING .
+   44 R: R MINUS_MINUS .
 
-    $default  reduce using rule 12 (T)
+    $default  reduce using rule 44 (R)
 
 
 State 62
 
-    9 T: FLOAT .
+   20 S: IDU EQUALS . E SEMI_COLON
 
-    $default  reduce using rule 9 (T)
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    E    go to state 85
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 63
 
-    6 DV: VAR LI COLON T . SEMI_COLON
+    9 T: INTEGER .
 
-    SEMI_COLON  shift, and go to state 79
+    $default  reduce using rule 9 (T)
 
 
 State 64
 
-   15 LI: LI COMMA IDD .
+   13 T: STRING .
 
-    $default  reduce using rule 15 (LI)
+    $default  reduce using rule 13 (T)
 
 
 State 65
 
-   17 S: IF LEFT_PARENTHESIS E . RIGHT_PARENTHESIS S ENDIF
-   18  | IF LEFT_PARENTHESIS E . RIGHT_PARENTHESIS S ELSE S ENDIF
-   22 E: E . AND R
-   23  | E . OR R
-   24  | E . LESS_THAN R
-   25  | E . GREATER_THAN R
-   26  | E . LESS_OR_EQUAL R
-   27  | E . GREATER_OR_EQUAL R
-   28  | E . EQUAL_EQUAL R
-   29  | E . NOT_EQUAL R
-   30  | E . PLUS R
-   31  | E . MINUS R
-   32  | E . TIMES R
-   33  | E . DIVIDE R
+   10 T: FLOAT .
 
-    AND                shift, and go to state 42
-    OR                 shift, and go to state 43
-    LESS_THAN          shift, and go to state 44
-    GREATER_THAN       shift, and go to state 45
-    LESS_OR_EQUAL      shift, and go to state 46
-    GREATER_OR_EQUAL   shift, and go to state 47
-    NOT_EQUAL          shift, and go to state 48
-    EQUAL_EQUAL        shift, and go to state 49
-    PLUS               shift, and go to state 50
-    MINUS              shift, and go to state 51
-    TIMES              shift, and go to state 52
-    DIVIDE             shift, and go to state 53
-    RIGHT_PARENTHESIS  shift, and go to state 80
+    $default  reduce using rule 10 (T)
 
 
 State 66
 
-   22 E: E AND R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   12 T: BOOLEAN .
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 22 (E)
+    $default  reduce using rule 12 (T)
 
 
 State 67
 
-   23 E: E OR R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   11 T: CHAR .
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 23 (E)
+    $default  reduce using rule 11 (T)
 
 
 State 68
 
-   24 E: E LESS_THAN R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+    7 DV: VAR LI COLON T . SEMI_COLON
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 24 (E)
+    SEMI_COLON  shift, and go to state 86
 
 
 State 69
 
-   25 E: E GREATER_THAN R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   16 LI: LI COMMA IDD .
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 25 (E)
+    $default  reduce using rule 16 (LI)
 
 
 State 70
 
-   26 E: E LESS_OR_EQUAL R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   18 S: IF LEFT_PARENTHESIS E . RIGHT_PARENTHESIS MTHEN S ENDIF
+   19  | IF LEFT_PARENTHESIS E . RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF
+   28 E: E . AND R
+   29  | E . OR R
+   30  | E . LESS_THAN R
+   31  | E . GREATER_THAN R
+   32  | E . LESS_OR_EQUAL R
+   33  | E . GREATER_OR_EQUAL R
+   34  | E . EQUAL_EQUAL R
+   35  | E . NOT_EQUAL R
+   36  | E . PLUS R
+   37  | E . MINUS R
+   38  | E . TIMES R
+   39  | E . DIVIDE R
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 26 (E)
+    AND                shift, and go to state 47
+    OR                 shift, and go to state 48
+    LESS_THAN          shift, and go to state 49
+    GREATER_THAN       shift, and go to state 50
+    LESS_OR_EQUAL      shift, and go to state 51
+    GREATER_OR_EQUAL   shift, and go to state 52
+    NOT_EQUAL          shift, and go to state 53
+    EQUAL_EQUAL        shift, and go to state 54
+    PLUS               shift, and go to state 55
+    MINUS              shift, and go to state 56
+    TIMES              shift, and go to state 57
+    DIVIDE             shift, and go to state 58
+    RIGHT_PARENTHESIS  shift, and go to state 87
 
 
 State 71
 
-   27 E: E GREATER_OR_EQUAL R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   21 S: WHILE MWHILE LEFT_PARENTHESIS . E RIGHT_PARENTHESIS MTHEN S
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
 
-    $default  reduce using rule 27 (E)
+    E    go to state 88
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 40
 
 
 State 72
 
-   29 E: E NOT_EQUAL R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   24 S: RETURN E SEMI_COLON .
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
-
-    $default  reduce using rule 29 (E)
+    $default  reduce using rule 24 (S)
 
 
 State 73
 
-   28 E: E EQUAL_EQUAL R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   28 E: E AND R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
     $default  reduce using rule 28 (E)
 
 
 State 74
 
-   30 E: E PLUS R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   29 E: E OR R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    $default  reduce using rule 30 (E)
+    $default  reduce using rule 29 (E)
 
 
 State 75
 
-   31 E: E MINUS R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   30 E: E LESS_THAN R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    $default  reduce using rule 31 (E)
+    $default  reduce using rule 30 (E)
 
 
 State 76
 
-   32 E: E TIMES R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   31 E: E GREATER_THAN R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    $default  reduce using rule 32 (E)
+    $default  reduce using rule 31 (E)
 
 
 State 77
 
-   33 E: E DIVIDE R .
-   36 R: R . PLUS_PLUS
-   38  | R . MINUS_MINUS
+   32 E: E LESS_OR_EQUAL R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    PLUS_PLUS    shift, and go to state 55
-    MINUS_MINUS  shift, and go to state 56
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    $default  reduce using rule 33 (E)
+    $default  reduce using rule 32 (E)
 
 
 State 78
 
-   19 S: IDU EQUALS E . SEMI_COLON
-   22 E: E . AND R
-   23  | E . OR R
-   24  | E . LESS_THAN R
-   25  | E . GREATER_THAN R
-   26  | E . LESS_OR_EQUAL R
-   27  | E . GREATER_OR_EQUAL R
-   28  | E . EQUAL_EQUAL R
-   29  | E . NOT_EQUAL R
-   30  | E . PLUS R
-   31  | E . MINUS R
-   32  | E . TIMES R
-   33  | E . DIVIDE R
+   33 E: E GREATER_OR_EQUAL R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    AND               shift, and go to state 42
-    OR                shift, and go to state 43
-    LESS_THAN         shift, and go to state 44
-    GREATER_THAN      shift, and go to state 45
-    LESS_OR_EQUAL     shift, and go to state 46
-    GREATER_OR_EQUAL  shift, and go to state 47
-    NOT_EQUAL         shift, and go to state 48
-    EQUAL_EQUAL       shift, and go to state 49
-    PLUS              shift, and go to state 50
-    MINUS             shift, and go to state 51
-    TIMES             shift, and go to state 52
-    DIVIDE            shift, and go to state 53
-    SEMI_COLON        shift, and go to state 81
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 33 (E)
 
 
 State 79
 
-    6 DV: VAR LI COLON T SEMI_COLON .
+   35 E: E NOT_EQUAL R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    $default  reduce using rule 6 (DV)
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 35 (E)
 
 
 State 80
 
-   17 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS . S ENDIF
-   18  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS . S ELSE S ENDIF
+   34 E: E EQUAL_EQUAL R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    IF            shift, and go to state 11
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    LEFT_BRACES   shift, and go to state 2
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    B    go to state 23
-    S    go to state 82
-    E    go to state 26
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 29
+    $default  reduce using rule 34 (E)
 
 
 State 81
 
-   19 S: IDU EQUALS E SEMI_COLON .
+   36 E: E PLUS R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    $default  reduce using rule 19 (S)
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 36 (E)
 
 
 State 82
 
-   17 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S . ENDIF
-   18  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S . ELSE S ENDIF
+   37 E: E MINUS R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    ELSE   shift, and go to state 83
-    ENDIF  shift, and go to state 84
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 37 (E)
 
 
 State 83
 
-   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE . S ENDIF
+   38 E: E TIMES R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    IF            shift, and go to state 11
-    MINUS         shift, and go to state 12
-    NOT           shift, and go to state 13
-    PLUS_PLUS     shift, and go to state 14
-    MINUS_MINUS   shift, and go to state 15
-    LEFT_BRACES   shift, and go to state 2
-    ID            shift, and go to state 16
-    STRINGVAL     shift, and go to state 17
-    TRUE          shift, and go to state 18
-    FALSE         shift, and go to state 19
-    CHARACTER     shift, and go to state 20
-    NUMERALFLOAT  shift, and go to state 21
-    NUMERALINT    shift, and go to state 22
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
 
-    B    go to state 23
-    S    go to state 85
-    E    go to state 26
-    R    go to state 27
-    NUM  go to state 28
-    IDU  go to state 29
+    $default  reduce using rule 38 (E)
 
 
 State 84
 
-   17 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ENDIF .
+   39 E: E DIVIDE R .
+   43 R: R . PLUS_PLUS
+   44  | R . MINUS_MINUS
 
-    $default  reduce using rule 17 (S)
+    PLUS_PLUS    shift, and go to state 60
+    MINUS_MINUS  shift, and go to state 61
+
+    $default  reduce using rule 39 (E)
 
 
 State 85
 
-   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S . ENDIF
+   20 S: IDU EQUALS E . SEMI_COLON
+   28 E: E . AND R
+   29  | E . OR R
+   30  | E . LESS_THAN R
+   31  | E . GREATER_THAN R
+   32  | E . LESS_OR_EQUAL R
+   33  | E . GREATER_OR_EQUAL R
+   34  | E . EQUAL_EQUAL R
+   35  | E . NOT_EQUAL R
+   36  | E . PLUS R
+   37  | E . MINUS R
+   38  | E . TIMES R
+   39  | E . DIVIDE R
 
-    ENDIF  shift, and go to state 86
+    AND               shift, and go to state 47
+    OR                shift, and go to state 48
+    LESS_THAN         shift, and go to state 49
+    GREATER_THAN      shift, and go to state 50
+    LESS_OR_EQUAL     shift, and go to state 51
+    GREATER_OR_EQUAL  shift, and go to state 52
+    NOT_EQUAL         shift, and go to state 53
+    EQUAL_EQUAL       shift, and go to state 54
+    PLUS              shift, and go to state 55
+    MINUS             shift, and go to state 56
+    TIMES             shift, and go to state 57
+    DIVIDE            shift, and go to state 58
+    SEMI_COLON        shift, and go to state 89
 
 
 State 86
 
-   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS S ELSE S ENDIF .
+    7 DV: VAR LI COLON T SEMI_COLON .
+
+    $default  reduce using rule 7 (DV)
+
+
+State 87
+
+   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS . MTHEN S ENDIF
+   19  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS . MTHEN S ELSE MELSE S ENDIF
+
+    $default  reduce using rule 25 (MTHEN)
+
+    MTHEN  go to state 90
+
+
+State 88
+
+   21 S: WHILE MWHILE LEFT_PARENTHESIS E . RIGHT_PARENTHESIS MTHEN S
+   28 E: E . AND R
+   29  | E . OR R
+   30  | E . LESS_THAN R
+   31  | E . GREATER_THAN R
+   32  | E . LESS_OR_EQUAL R
+   33  | E . GREATER_OR_EQUAL R
+   34  | E . EQUAL_EQUAL R
+   35  | E . NOT_EQUAL R
+   36  | E . PLUS R
+   37  | E . MINUS R
+   38  | E . TIMES R
+   39  | E . DIVIDE R
+
+    AND                shift, and go to state 47
+    OR                 shift, and go to state 48
+    LESS_THAN          shift, and go to state 49
+    GREATER_THAN       shift, and go to state 50
+    LESS_OR_EQUAL      shift, and go to state 51
+    GREATER_OR_EQUAL   shift, and go to state 52
+    NOT_EQUAL          shift, and go to state 53
+    EQUAL_EQUAL        shift, and go to state 54
+    PLUS               shift, and go to state 55
+    MINUS              shift, and go to state 56
+    TIMES              shift, and go to state 57
+    DIVIDE             shift, and go to state 58
+    RIGHT_PARENTHESIS  shift, and go to state 91
+
+
+State 89
+
+   20 S: IDU EQUALS E SEMI_COLON .
+
+    $default  reduce using rule 20 (S)
+
+
+State 90
+
+   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN . S ENDIF
+   19  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN . S ELSE MELSE S ENDIF
+
+    IF            shift, and go to state 13
+    WHILE         shift, and go to state 14
+    RETURN        shift, and go to state 15
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    LEFT_BRACES   shift, and go to state 5
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    B    go to state 27
+    S    go to state 92
+    E    go to state 30
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 33
+
+
+State 91
+
+   21 S: WHILE MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS . MTHEN S
+
+    $default  reduce using rule 25 (MTHEN)
+
+    MTHEN  go to state 93
+
+
+State 92
+
+   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S . ENDIF
+   19  | IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S . ELSE MELSE S ENDIF
+
+    ELSE   shift, and go to state 94
+    ENDIF  shift, and go to state 95
+
+
+State 93
+
+   21 S: WHILE MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN . S
+
+    IF            shift, and go to state 13
+    WHILE         shift, and go to state 14
+    RETURN        shift, and go to state 15
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    LEFT_BRACES   shift, and go to state 5
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    B    go to state 27
+    S    go to state 96
+    E    go to state 30
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 33
+
+
+State 94
+
+   19 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE . MELSE S ENDIF
+
+    $default  reduce using rule 26 (MELSE)
+
+    MELSE  go to state 97
+
+
+State 95
+
+   18 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ENDIF .
 
     $default  reduce using rule 18 (S)
+
+
+State 96
+
+   21 S: WHILE MWHILE LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S .
+
+    $default  reduce using rule 21 (S)
+
+
+State 97
+
+   19 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE . S ENDIF
+
+    IF            shift, and go to state 13
+    WHILE         shift, and go to state 14
+    RETURN        shift, and go to state 15
+    MINUS         shift, and go to state 16
+    NOT           shift, and go to state 17
+    PLUS_PLUS     shift, and go to state 18
+    MINUS_MINUS   shift, and go to state 19
+    LEFT_BRACES   shift, and go to state 5
+    ID            shift, and go to state 20
+    STRINGVAL     shift, and go to state 21
+    TRUE          shift, and go to state 22
+    FALSE         shift, and go to state 23
+    CHARACTER     shift, and go to state 24
+    NUMERALFLOAT  shift, and go to state 25
+    NUMERALINT    shift, and go to state 26
+
+    B    go to state 27
+    S    go to state 98
+    E    go to state 30
+    R    go to state 31
+    NUM  go to state 32
+    IDU  go to state 33
+
+
+State 98
+
+   19 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S . ENDIF
+
+    ENDIF  shift, and go to state 99
+
+
+State 99
+
+   19 S: IF LEFT_PARENTHESIS E RIGHT_PARENTHESIS MTHEN S ELSE MELSE S ENDIF .
+
+    $default  reduce using rule 19 (S)

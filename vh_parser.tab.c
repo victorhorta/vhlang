@@ -112,10 +112,7 @@ extern void init_globais();
 # define YYERROR_VERBOSE 0
 #endif
 
-/* In a future release of Bison, this section will be replaced
-   by #include "vh_parser.tab.h".  */
-#ifndef YY_YY_VH_PARSER_TAB_H_INCLUDED
-# define YY_YY_VH_PARSER_TAB_H_INCLUDED
+
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -195,7 +192,7 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 199 "vh_parser.tab.c"
+#line 196 "vh_parser.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -218,12 +215,12 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_YY_VH_PARSER_TAB_H_INCLUDED  */
+
 
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 227 "vh_parser.tab.c"
+#line 224 "vh_parser.tab.c"
 
 #ifdef short
 # undef short
@@ -2281,7 +2278,7 @@ yyreduce:
 
 
 /* Line 1787 of yacc.c  */
-#line 2285 "vh_parser.tab.c"
+#line 2282 "vh_parser.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2516,15 +2513,26 @@ yyreturn:
 #line 671 "vh_parser.y"
 
 
-int main() {
+int main(int argc, char **argv) {
   // Inicializando variaveis globais!!!
   init_globais();
+  const int MAX_PATH_LENGTH = 30;
 
-  FILE *myfile = fopen("teste.file", "r");
+  char* default_file_name = (char*)malloc((MAX_PATH_LENGTH + 1) * sizeof(char));
+  strcpy(default_file_name, "teste.file");
+
+  char* file_name = (char*)malloc((MAX_PATH_LENGTH + 1) * sizeof(char));
+
+  (argc == 1) ? strcpy(file_name, default_file_name) : strcpy(file_name, argv[1]);;
+
+
+  FILE *myfile = fopen(file_name, "r");
 
   if(!myfile) {
     printf("Erro abrindo arquivo\n");
     return -1;
+  } else {
+    printf("Abrindo arquivo: %s\n", file_name);
   }
 
   if(MODO_DEBUG)
@@ -2536,4 +2544,5 @@ int main() {
   } while(!feof(yyin));
   
   printf("---------------\nFIM DO PROGRAMA\n");
+  printf("Arquivo lido com exito: %s\n", file_name);
 }

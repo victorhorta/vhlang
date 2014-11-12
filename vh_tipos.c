@@ -7,48 +7,11 @@
 extern int yyerror(const char *msg);
 FILE* output;
 
-// Definindo os escalares
-object int_ = { -1, NULL, SCALAR_TYPE_};
-pobject pInt = &int_;
-
-object char_ = { -1, NULL, SCALAR_TYPE_};
-pobject pChar = &char_;
-
-object boolean_ = { -1, NULL, SCALAR_TYPE_};
-pobject pBoolean = &boolean_;
-
-object string_ = { -1, NULL, SCALAR_TYPE_};
-pobject pString = &string_;
-
-object universal_ = { -1, NULL, SCALAR_TYPE_};
-pobject pUniversal = &universal_;
 
 
 
-/*
-
-variaveis:
--tipo: 
--nome: 
--valor
-
-*/
-
-object new_object(char* label, pobject* type) {
-   // if(object_linked_list.)
-	object xxx;
-	return xxx;
-}
 
 
-
-/*
- * Metodo que busca o indice (int) de uma id, retornando o valor dela.
- * Se nao houver a label, insere a label ao final da lista e retorna o
- * id da nova label criada.
- * return:
- *     -1, se excedeu o numero maximo de variaveis
- */
 
 int last_value = -1;
 char** variables;
@@ -63,7 +26,7 @@ void init_globais() {
 	 variables = (char**)malloc(sizeof(char*) * MAX_VARS + 1); 
 	 ALL_VARIABLES = (var_object*)malloc(sizeof(var_object) * MAX_VARS + 1);
 	 ALL_CONSTANTS = (const_object*)malloc(sizeof(const_object) * MAX_CONSTS + 1);
-	 output = fopen("teste.output", "w");
+	 output = fopen("programa.output", "w");
 }
 
 
@@ -228,7 +191,7 @@ int check_types(v_type t1, int operador, v_type t2) {
 		case NOT:
 	 	case AND:
 	 	case OR:
-	 		if(t1==V_BOOLEAN && t2==V_BOOLEAN)
+	 		if(t1==V_BOOLEAN)
 	 			return V_BOOLEAN;
 	 		else
 	 			return -1;
@@ -412,7 +375,7 @@ int give_me_a_label() {
 }
 
 void generate_OP(int op) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	char command[100];
 	switch(op) {
 		case DUP:         strncpy(command, "DUP", 100); break;
@@ -441,91 +404,91 @@ void generate_OP(int op) {
 }
 
 void generate_BEGIN() {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "BEGIN_FUNC\t%d %d %d\n", FUNC_INDEX++, 0, ALL_VARIABLES_SIZE);
 	fclose(output);
 	return;	
 }
 
 void generate_END() {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "END_FUNC\n");
 	fclose(output);
 	return;	
 }
 
 void generate_LOAD_TRUE(int n, char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "LOAD_TRUE\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }
 
 void generate_LOAD_FALSE(int n, char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "LOAD_FALSE\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }
 
 void generate_LOAD_CONST(int n, char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "LOAD_CONST\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }
 
 void generate_LOAD_VAR(int n, char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "LOAD_VAR\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }
 
 void generate_STORE_VAR(int n, char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "STORE_VAR\t%d\t(%s)\n", n, s);
 	fclose(output);
 	return;	
 }
 
 void generate_LOAD_REF(int n, char* label) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "LOAD_REF\t%d\t(%s)\n", n, label);
 	fclose(output);
 	return;		
 }
 
 void generate_STORE_REF(int n, char* label) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "STORE_REF\t%d\t(%s)\n", n, label);
 	fclose(output);
 	return;			
 }
 
 void generate_TJMP_FW(int n) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "TJMP_FW\t\tL%d\n", n);
 	fclose(output);
 	return;				
 }
 
 void generate_JMP_FW(int n) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "JMP_FW\t%d\n", n);
 	fclose(output);
 	return;
 }
 
 void generate_JMP_BW(int n) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "JMP_BW\t%d\n", n);
 	fclose(output);
 	return;
 }
 
 void generate_STRING_LF(char* s) {
-	output = fopen("teste.output", "a");
+	output = fopen("programa.output", "a");
 	fprintf(output, "%s\n", s);
 	fclose(output);
 	return;

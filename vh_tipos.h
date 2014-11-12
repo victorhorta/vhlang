@@ -147,37 +147,13 @@ typedef struct object {
     }_;
 } object, *pobject;
 
-// Definindo os escalares
-// object int_ = { -1, NULL, SCALAR_TYPE_};
-// pobject pInt = &int_;
-
-// object char_ = { -1, NULL, SCALAR_TYPE_};
-// pobject pChar = &char_;
-
-// object boolean_ = { -1, NULL, SCALAR_TYPE_};
-// pobject pBoolean = &boolean_;
-
-// object string_ = { -1, NULL, SCALAR_TYPE_};
-// pobject pString = &string_;
-
-// object universal_ = { -1, NULL, SCALAR_TYPE_};
-// pobject pUniversal = &universal_;
 
 
 
-/*
 
-variaveis:
--tipo: 
--nome: 
--valor
+void init_globais();
 
-*/
-//static object object_linked_list;
-
-object new_object(char* label, pobject* type);
-
-
+int var_scan(char* label);
 
 /*
  * Metodo que busca o indice (int) de uma id, retornando o valor dela.
@@ -186,12 +162,6 @@ object new_object(char* label, pobject* type);
  * return:
  *     -1, se excedeu o numero maximo de variaveis
  */
-
-// int last_value = -1;
-// char** variables;
-void init_globais();
-
-int var_scan(char* label);
 int var_scan_or_append(var_object var);
 int var_scan_or_append_old(char* label);
 
